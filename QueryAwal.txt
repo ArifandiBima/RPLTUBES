@@ -1,0 +1,112 @@
+DROP TABLE IF EXISTS nilai;
+DROP TABLE IF EXISTS komponenPenilaian;
+DROP TABLE IF EXISTS anggotaKelompok;
+DROP TABLE IF EXISTS kelompok;
+DROP TABLE IF EXISTS tugasBesar;
+DROP TABLE IF EXISTS peserta;
+DROP TABLE IF EXISTS pengampu;
+DROP TABLE IF EXISTS kelas
+DROP TABLE IF EXISTS mataKuliah;
+DROP TABLE IF EXISTS dosen;
+DROP TABLE IF EXISTS mahasiswa;
+DROP TABLE IF EXISTS pengguna;
+
+CREATE TABLE IF NOT EXISTS pengguna(
+    username VARCHAR(20) PRIMARY KEY,
+    pass VARCHAR(255),
+    tipePengguna int
+);
+CREATE TABLE IF NOT EXISTS mahasiswa(
+    npm char(10) PRIMARY KEY,
+    nama varchar(30),
+    username VARCHAR(20),
+    FOREIGN KEY (username) REFERENCES pengguna(username)
+);
+CREATE TABLE IF NOT EXISTS dosen(
+    nik char(20) PRIMARY KEY,
+    nama varchar(30),
+    username VARCHAR(20),
+    FOREIGN KEY (username) REFERENCES pengguna(username)
+);
+CREATE TABLE IF NOT EXISTS mataKuliah(
+    kodeMataKuliah varchar(10) PRIMARY KEY,
+    namaMataKuliah varchar(30)
+);
+CREATE TABLE IF NOT EXISTS kelas(
+    kodeMataKuliah varchar(10),
+    kodeKelas varchar(3),
+    semester int,
+    PRIMARY KEY(kodeMataKuliah,kodeKelas,semester),
+    FOREIGN KEY(kodeMataKuliah) REFERENCES mataKuliah(kodeMataKuliah)
+);
+CREATE TABLE IF NOT EXISTS pengampu(
+    nikPengampu char(20),
+    kodeMataKuliah varchar(10),
+    kodeKelas varchar(3),
+    semester int,
+    FOREIGN KEY(nikPengampu) REFERENCES dosen(nik),
+    FOREIGN KEY(kodeMataKuliah, kodeKelas, semester) REFERENCES kelas(kodeMataKuliah,kodeKelas,semester)
+);
+CREATE TABLE IF NOT EXISTS peserta(
+    npmPeserta char(20),
+    kodeMataKuliah varchar(10),
+    kodeKelas varchar(3),
+    semester int,
+    FOREIGN KEY (npmPeserta) REFERENCES mahasiswa(npm),
+    FOREIGN KEY(kodeMataKuliah, kodeKelas, semester) REFERENCES kelas(kodeMataKuliah,kodeKelas,semester)
+);
+CREATE TABLE IF NOT EXISTS tugasBesar(
+    namaTugasBesar varchar(30),
+	kodeMataKuliah varchar(10),
+    kodeKelas varchar(3),
+    semester int,
+    banyakAnggotaKelompok int,
+    PRIMARY KEY(namaTugasBesar,kodeMataKuliah,kodeKelas,semester),
+    FOREIGN KEY(kodeMataKuliah, kodeKelas, semester) REFERENCES kelas(kodeMataKuliah,kodeKelas,semester)
+);
+CREATE TABLE IF NOT EXISTS kelompok(
+	namaTugasBesar varchar(30),
+	kodeMataKuliah varchar(10),
+    kodeKelas varchar(3),
+    semester int,
+    nomorKelompok int NOT NULL,
+    PRIMARY KEY(namaTugasBesar,kodeMataKuliah,kodeKelas,semester,nomorKelompok),
+    FOREIGN KEY(namaTugasBesar,kodeMataKuliah, kodeKelas, semester) REFERENCES tugasBesar(namaTugasBesar,kodeMataKuliah,kodeKelas,semester)
+);
+CREATE TABLE IF NOT EXISTS anggotaKelompok(
+	namaTugasBesar varchar(30),
+	kodeMataKuliah varchar(10),
+    kodeKelas varchar(3),
+    semester int,
+    nomorKelompok int NOT NULL,
+    npmPeserta char(10),
+    PRIMARY KEY(namaTugasBesar,kodeMataKuliah,kodeKelas,semester,npmPeserta),
+    FOREIGN KEY(npmPeserta) REFERENCES mahasiswa(npm),
+    FOREIGN KEY(namaTugasBesar,kodeMataKuliah, kodeKelas, semester) REFERENCES kelompok(namaTugasBesar,kodeMataKuliah,kodeKelas,semester)
+);
+CREATE TABLE IF NOT EXISTS komponenPenilaian(
+	namaTugasBesar varchar(30),
+	kodeMataKuliah varchar(10),
+    kodeKelas varchar(3),
+    semester int,
+    nomorKomponen int,
+    bobot float,
+    rubrik varchar(256),
+    tanggalPenilaian date,
+    isHidden boolean,
+    PRIMARY KEY(namaTugasBesar,kodeMataKuliah,kodeKelas,semester,nomorKomponen),
+    FOREIGN KEY(namaTugasBesar,kodeMataKuliah, kodeKelas, semester) REFERENCES tugasBesar(namaTugasBesar,kodeMataKuliah,kodeKelas,semester)
+);
+CREATE TABLE IF NOT EXISTS nilai(
+	namaTugasBesar varchar(30),
+	kodeMataKuliah varchar(10),
+    kodeKelas varchar(3),
+    semester int,
+    nomorKomponen int,
+    nilai float,
+    komentar varchar(256),
+    npmPeserta char(10),
+    PRIMARY KEY(namaTugasBesar,kodeMataKuliah,kodeKelas,semester,nomorKomponen),
+    FOREIGN KEY(npmPeserta) REFERENCES mahasiswa(npm),
+    FOREIGN KEY(namaTugasBesar,kodeMataKuliah, kodeKelas, semester,nomorKomponen) REFERENCES komponenPenilaian(namaTugasBesar,kodeMataKuliah,kodeKelas,semester,nomorKomponen)
+);
