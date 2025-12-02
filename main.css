@@ -19,19 +19,15 @@ body {
     background-color: #C4C4C4;
 }
 
-.btn {
+.btn, input[type="text"], input[type="password"] {
+    height: 30px;
     border: 0px;
-    border-radius: 5px;
-}
-
-input[type="text"], input[type="password"] {
-    border: 0px;
-    border-radius: 5px;
+    border-radius: 7px;
 }
 
 .box {
     border: 0px;
-    border-radius: 10px;
+    border-radius: 20px;
     background-color: var(--box-color);
 }
 
