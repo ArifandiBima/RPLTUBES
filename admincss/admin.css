@@ -1,0 +1,56 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: #C4C4C4; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#btnBack {
+    position: absolute; 
+    top: 0px;              
+    left: 5px;         
+    
+    font-size: 30px;
+    font-weight: bold;
+    color:#35BC55;
+}
+
+
+#container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;     
+}
+
+button {
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #5c6db1;
+    color: white;
+    transition: 0.3s;
+}
+
+button a {
+    text-decoration: none;
+    color: white;
+}
+
+#expExcel {
+    background-color: #28a745; 
+    color: white;
+    width: 250px;
+}
+
+#subBtn{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 20px;
+}

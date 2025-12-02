@@ -1,0 +1,82 @@
+body {
+    background-color: #C4C4C4;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-back {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    text-decoration: none;
+    color: #35BC55;
+    font-size: 30px;
+    font-weight: bold;
+    
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /
+}
+
+.form-row {
+    display: flex;
+    gap: 20px; 
+    align-items: flex-end; 
+}
+
+
+select {
+    padding: 10px 15px;
+    border-radius: 20px;
+    border: none;
+    background-color: #7d84a3; 
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    height: 40px;
+    /* cursor: pointer;
+    outline: none; */
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column; /* Label di atas input */
+}
+
+.input-group label {
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #000;
+}
+
+input {
+    width: 250px;
+    height: 35px;
+    border-style: none;
+    border-radius: 8px;
+    padding-left: 10px; 
+}
+
+.button-row {
+    display: flex;
+    justify-content: flex-end; 
+}
+
+button {
+    border-style: none;
+    background-color: #5c6db1; 
+    color: white;
+    width: 150px;
+    height: 35px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
