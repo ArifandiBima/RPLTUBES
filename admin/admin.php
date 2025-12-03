@@ -1,12 +1,28 @@
+<?php
+    session_start();
+
+    if(!isset($_SESSION['status']) || $_SESSION['status'] != "login"){
+        header("Location: ../login.html");
+        exit();
+    }
+
+    if($_SESSION['role'] != 1){
+        echo "<script>
+                alert('Tidak punya akses ke halaman admin!');
+                window.location.href = 'login.html'
+            </script>";
+        exit();
+    }
+?>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Admin page</title>
-        <link href="../admincss/admin.css"rel="stylesheet">
+        <link href="../assets/admin.css"rel="stylesheet">
     </head>
     <body>
         <div id="btnBack">
-            <p>⮌</p>
+            <p a href="logout.php">⮌</p>
         </div>
 
         <div id="container">

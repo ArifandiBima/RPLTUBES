@@ -4,7 +4,7 @@
         <title>
             Kelola Semester
         </title>
-        <link href="../admincss/kelola_semester.css" rel="stylesheet">
+        <link href="../assets/kelola_semester.css" rel="stylesheet">
     </head>
 
     <body>
