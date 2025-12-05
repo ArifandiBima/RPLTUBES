@@ -8,7 +8,7 @@ $mahasiswa = [
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="nilaiStyles.css">
 </head>
 
 <body>
@@ -66,3 +66,4 @@ $mahasiswa = [
 </div>
 </body>
 </html>
+
