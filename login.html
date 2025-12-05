@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="main.css">
+    <style>
+        body{
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        section{
+            height: 150px;
+            width: 205px;
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            row-gap: 5px;
+        }
+
+        .btn{
+            width: 162px;
+            margin: 20px;
+            color: white;
+            background-color: var(--green-button-color);
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <form action="login" method="post">
+            <section class="box">
+                <span class="form-label">Username</span>:<br>
+                <input type="text" name="username"/><br>
+                <span class="form-label">Password</span>:<br>
+                <input type="password" name="password"/><br>
+            </section>
+            <input class="btn" type="submit" value="Sign in">
+        </form>
+    </main>
+    
+</body>
+</html>
