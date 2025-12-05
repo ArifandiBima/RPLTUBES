@@ -1,0 +1,115 @@
+:root{
+    --background: #F0F2F5;
+    --card-container: #FFFFFF;
+    --primary-color: #4A90E2;
+    --text-color: #333333;
+    --accent: #357ABD;
+}
+h3{
+    text-align: center;
+    color: var(--text-color);
+    font-size: 30px;
+}
+
+p{
+    font-size: 18px;
+}
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: var(--background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse; 
+    font-size: 14px;
+    background-color: white;
+    margin: 10px;
+}
+
+th, td {
+    border: 1px solid #777; 
+    padding: 8px;           
+    text-align: center;       
+    color: #000;            
+}
+
+
+th {
+    background-color: #e6e6e6; 
+    font-weight: bold;
+    text-align: center;      
+    border-bottom: 2px solid #555; 
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+#container {
+    box-sizing: border-box;
+    width: 60%;
+    background-color: var(--card-container);
+    padding: 30px;
+    
+    /* --- TAMBAHAN SHADOW --- */
+    /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    
+    /* Opsional: Tambahkan ini agar sudutnya tidak tajam, shadow jadi makin bagus */
+    border-radius: 12px; 
+}
+
+input[type="file"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border: 2px dashed #ccc; /* Garis putus-putus ala Dropzone */
+    border-radius: 8px;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: 0.3s;
+    color: #555;
+}
+
+#btn-submit {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-back {
+    display: inline-flex;       /* Agar icon dan teks sejajar rapi */
+    align-items: center;        /* Rata tengah vertikal */
+    justify-content: center;    /* Rata tengah horizontal */
+    gap: 8px;                   /* Jarak antara panah dan teks */
+    
+    margin-top: 25px;
+    padding: 10px 24px;         /* Luas tombol */
+    
+    text-decoration: none;      /* Hilangkan garis bawah link */
+    color: #666;                /* Warna teks abu-abu (netral) */
+    font-weight: 600;
+    font-size: 14px;
+    
+    background-color: transparent; /* Latar transparan */
+    border: 2px solid #ddd;     /* Garis tepi tipis */
+    border-radius: 50px;        /* Membuat tombol lonjong (Pill shape) */
+    
+    transition: all 0.3s ease;  /* Animasi halus */
+    width: fit-content;         /* Lebar menyesuaikan isi teks */
+}

@@ -1,8 +1,8 @@
 <?php
-    if(!isset($_SESSION['status']) || $_SESSION['status'] != "login"){
-        header("Location: ../login.html");
-        exit();
-    }
+    // if(!isset($_SESSION['status']) || $_SESSION['status'] != "login"){
+    //     header("Location: ../login.html");
+    //     exit();
+    // }
 
     include '../config/conn.php';
 
@@ -10,22 +10,23 @@
         $target_user = $_POST['username_target'];
         $password_baru = $_POST['password_baru'];
 
-        if(!empty($target_user) && !empty($password_baru))
-        $sql = "update pengguna set pass = '$password_baru' where username ='$target_user";
+            if(!empty($target_user) && !empty($password_baru)){
+                $sql = "update pengguna set pass = '$password_baru' where username ='$target_user'";
 
-        if(mysqli_query($conn, $sql)){
+                if(mysqli_query($conn, $sql)){
+                    echo "<script>
+                            alert('Password $target_user berhasil diganti')
+                        </script>";
+                }
+                else{
+                    echo "Eror" . mysqli_error(($conn));
+                }
+            }
+        else{
             echo "<script>
-                    alert('Password $target_user berhasil diganti')
+                    alert('Username dan password tidak boleh kosong')        
                 </script>";
         }
-        else{
-            echo "Eror" . mysqli_error(($conn));
-        }
-    }
-    else{
-        echo "<script>
-                alert('Username dan password tidak boleh kosong')        
-            </script>";
     }
 ?>  
 <!DOCTYPE html>
@@ -37,7 +38,7 @@
         
     <body>
 
-        <a href="index.php" class="btn-back">⮌</a>
+        <a href="admin.php" class="btn-back">⮌</a>
 
         <div class="form-container">
             
@@ -45,7 +46,7 @@
                 
                 <div class="form-row">
                     
-                    <div class="dropdown-group">
+                    <!-- <div class="dropdown-group">
                         <select name="pilih_user" onchange="document.getElementById('inputUser').value = this.value">
                             <option value="">-- Pilih User --</option>
                             <?php
@@ -57,7 +58,7 @@
                                 }
                             ?>
                         </select>
-                    </div>
+                    </div> -->
 
                     <div class="input-group">
                         <label>Username Target:</label>
