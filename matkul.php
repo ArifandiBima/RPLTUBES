@@ -1,5 +1,6 @@
 <?php require "conn.php";
-session_start();?>
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,49 +17,63 @@ session_start();?>
     <div class="profile-card">
         <div class="profile-icon"></div>
         <div class="profile-text">
-            <b>Nama:</b> <?php ?><br>
-            <b>NIK:</b> 2009181391
+            <b>Nama:</b> <?php echo$_SESSION["nama"]?><br>
+            <b>NIK:</b> <?php echo $_SESSION["npm"];?>
         </div>
     </div>
 
 </div>
 <div id="year-container">
     <select class="year-select">
-        <option>Ganjil 2023/2024</option>
-        <option>Genap 2023/2024</option>
-        <option>Ganjil 2024/2025</option>
+    <?php
+    $semester=0;
+    $querySemester = "
+        SELECT DISTINCT semester
+        FROM peserta
+        WHERE npmPeserta = ?
+        ORDER BY semester
+    ";
+    $stmt = $conn->prepare($querySemester);
+    $stmt->bind_param("s", $_SESSION["npm"]);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if (isset($_GET["semester"])) {
+        $semester = $GET["semester"];
+    }
+    while ($row = $result->fetch_assoc()) {
+        if ($semester==0) $semester = $row["semester"];
+        if ($semester==$row["semester"]) echo"<option selected>";
+        else echo"<option>";
+        echo $row["semester"]."</option>";
+    }
+    ?>
     </select>
 </div>
 
 <div class="container">
-    <div class="card">
-        AIF12313123<br>
-        NAMA MAT
-    </div>
-    <div class="card">
-        AIF123123<br>
-        Matkul00
-    </div>
-    <div class="card">
-        AIF123124<br>
-        Matkul91
-    </div>
-    <div class="card">
-        AIF12313123<br>
-        NAMA MAT
-    </div>
-    <div class="card">
-        AIF12313123<br>
-        NAMA MAT
-    </div>
-    <div class="card">
-        AIF12313123<br>
-        NAMA MAT
-    </div>
-    <div class="card">
-        AIF12313123<br>
-        NAMA MAT
-    </div>
+    <?php
+    $queryMatkul = "
+        SELECT kodeMataKuliah, namaMataKuliah
+        FROM MataKuliah
+        WHERE kodeMataKuliah in (
+            SELECT kodeMataKuliah
+            FROM peserta
+            WHERE npmPeserta = ?  and semester = ?
+        
+        );
+    ";
+    $stmt = $conn->prepare($queryMatkul);
+    $stmt->bind_param("si", $_SESSION["npm"], $semester);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        echo '<div class="card">'.
+        $row["kodeMataKuliah"].'<br>'.
+        $row["namaMataKuliah"].'</div>';
+    }
+    
+    ?>
 </div>
 
 </body>

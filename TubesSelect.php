@@ -26,33 +26,26 @@ session_start();?>
 
 <div class="container">
     <div class="card">
-        AIF12313123<br>
-        NAMA MAT
+        AIF12313123
     </div>
-    <div class="card">
-        AIF123123<br>
-        Matkul00
-    </div>
-    <div class="card">
-        AIF123124<br>
-        Matkul91
-    </div>
-    <div class="card">
-        AIF12313123<br>
-        NAMA MAT
-    </div>
-    <div class="card">
-        AIF12313123<br>
-        NAMA MAT
-    </div>
-    <div class="card">
-        AIF12313123<br>
-        NAMA MAT
-    </div>
-    <div class="card">
-        AIF12313123<br>
-        NAMA MAT
-    </div>
+    <?php
+    $queryTubes = "
+        SELECT namaTugasBesar
+        FROM tugasBesar
+        WHERE kodeMataKuliah = ? AND semester = ? AND kodeKelas = ?
+    ";
+    $stmt = $conn->prepare($queryTubes);
+    $stmt->bind_param("sis", $_GET["kodeMataKuliah"], $_GET["semester"], $_GET["kodeKelas"]);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        echo '<div class="card">'.
+            $row["namaTugasBesar"].
+            '</div>'
+        ;
+    }
+    ?>
 </div>
 
 </body>
