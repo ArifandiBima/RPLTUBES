@@ -93,6 +93,7 @@ CREATE TABLE IF NOT EXISTS komponenPenilaian(
     kodeKelas varchar(3),
     semester int,
     nomorKomponen int,
+    namaKomponen varchar(30),
     bobot float,
     rubrik varchar(256),
     tanggalPenilaian date,
@@ -166,9 +167,9 @@ INSERT INTO anggotaKelompok VALUES
 ('Project Basis Data', 'IF102', 'A', 1, 1, '2200000001');
 
 INSERT INTO komponenPenilaian VALUES
-('Project Algoritma', 'IF101', 'A', 1, 1, 40, 'Kualitas Kode', '2025-01-15', false),
-('Project Algoritma', 'IF101', 'A', 1, 2, 60, 'Laporan Akhir', '2025-01-20', false),
-('Project Basis Data', 'IF102', 'A', 1, 1, 50, 'Desain ERD', '2025-01-14', false);
+('Project Algoritma', 'IF101', 'A', 1, 1,'komponen1', 40, 'Kualitas Kode', '2025-01-15', false),
+('Project Algoritma', 'IF101', 'A', 1, 2, 'komponen3', 60, 'Laporan Akhir', '2025-01-20', false),
+('Project Basis Data', 'IF102', 'A', 1, 1,'komponen2', 50, 'Desain ERD', '2025-01-14', false);
 
 INSERT INTO nilai VALUES
 ('Project Algoritma', 'IF101', 'A', 1, 1, 85, 'Baik', '2200000001'),
