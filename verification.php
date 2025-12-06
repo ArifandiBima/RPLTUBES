@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once 'config.php';
+require_once 'conn.php';
 
 $input_username = $_POST['username'];
 $input_password = $_POST['password'];
