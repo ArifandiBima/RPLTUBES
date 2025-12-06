@@ -57,12 +57,9 @@ tr:hover {
     width: 60%;
     background-color: var(--card-container);
     padding: 30px;
-    
-    /* --- TAMBAHAN SHADOW --- */
     /* offset-x | offset-y | blur-radius | spread-radius | color */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     
-    /* Opsional: Tambahkan ini agar sudutnya tidak tajam, shadow jadi makin bagus */
     border-radius: 12px; 
 }
 
@@ -70,7 +67,7 @@ input[type="file"] {
     width: 100%;
     padding: 12px;
     background-color: #f8f9fa;
-    border: 2px dashed #ccc; /* Garis putus-putus ala Dropzone */
+    border: 2px dashed #ccc;
     border-radius: 8px;
     cursor: pointer;
     box-sizing: border-box;
@@ -93,23 +90,20 @@ input[type="file"] {
 }
 
 .btn-back {
-    display: inline-flex;       /* Agar icon dan teks sejajar rapi */
-    align-items: center;        /* Rata tengah vertikal */
-    justify-content: center;    /* Rata tengah horizontal */
-    gap: 8px;                   /* Jarak antara panah dan teks */
+    /* display: inline-flex;        */
+    position: absolute;
+    top: 0px;              
+    left: 5px;         
+    align-items: center;        
+    justify-content: center;    
+    gap: 8px;                   
     
     margin-top: 25px;
-    padding: 10px 24px;         /* Luas tombol */
+    padding: 10px 24px;         
     
-    text-decoration: none;      /* Hilangkan garis bawah link */
-    color: #666;                /* Warna teks abu-abu (netral) */
+    text-decoration: none;      
+    color: #666;                
     font-weight: 600;
-    font-size: 14px;
-    
-    background-color: transparent; /* Latar transparan */
-    border: 2px solid #ddd;     /* Garis tepi tipis */
-    border-radius: 50px;        /* Membuat tombol lonjong (Pill shape) */
-    
-    transition: all 0.3s ease;  /* Animasi halus */
-    width: fit-content;         /* Lebar menyesuaikan isi teks */
+    font-size: 20px;
+
 }

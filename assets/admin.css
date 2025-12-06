@@ -17,22 +17,26 @@ body {
 }
 
 #btnBack {
-    position: absolute; 
+    position: absolute;
     top: 0px;              
     left: 5px;         
-    font-size: 25px;
-    font-weight: bold;
-    background-color: transparent; /* Latar transparan */
-    border: 2px solid #ddd;     /* Garis tepi tipis */
-    border-radius: 50px;
-    margin-top: 25px;
-    padding: 1px 5px 0px;
+    align-items: center;        
+    justify-content: center;    
+    gap: 8px;                   
+    
+    margin-top: 10px;
+    padding: 10px 24px;         
+    
+    text-decoration: none;                     
+    font-weight: 600;
+    font-size: 20px;
 }
 
 #btnBack a{
     text-decoration: none;
-    color:#35BC55;
+    color: #666; 
 }
+
 #container {
     display: flex;
     flex-direction: column;
