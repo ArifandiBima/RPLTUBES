@@ -27,4 +27,8 @@ if ($result->num_rows === 1) {
 
 $stmt->close();
 $conn->close();
+<<<<<<< HEAD
 ?>
+=======
+?>
+>>>>>>> 76d24fb (update nilai_mahasiswa dan nilai_dosen)
