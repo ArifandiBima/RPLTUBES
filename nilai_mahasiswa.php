@@ -48,4 +48,3 @@ $komponen = [
 </div>
 </body>
 </html>
->>>>>>> 29117f52e4cf377569b6e6d0fe975986e375bb66
