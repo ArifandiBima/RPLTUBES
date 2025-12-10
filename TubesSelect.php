@@ -39,16 +39,38 @@ session_start();?>
     $stmt->execute();
     $result = $stmt->get_result();
 
+    $data = array(
+        'namaMataKuliah' => $_GET["namaMataKuliah"],
+        'kodeMataKuliah' => $_GET["kodeMataKuliah"],
+        'kodeKelas'   => $_GET["kodeKelas"],
+        'semester'       => $_GET["semester"]
+    );
+    $targetLocation = "index.php";
+    if ($_SESSION["tipePengguna"]==2){
+        $targetLocation = "pilih_kelompok.php";
+    }
+    else if ($_SESSION["tipePengguna"]==3){
+        $targetLocation = "pilih_kelompok.php";
+    }
     while ($row = $result->fetch_assoc()) {
-        echo '<div class="card">'.$row["namaTugasBesar"].'</div>';
+        $data["namaTugasBesar"] = $row["namaTugasBesar"];
+        echo '<a href ="'.$targetLocation.'?'.http_build_query($data).'<div class="card">'.$row["namaTugasBesar"].'</div>';
     }
     ?>
 </div>
-<?php
-if ($_SESSION["tipePengguna"]="dosen"){
-    echo '<button type="button"> Make a New Tubes</button>';
-}
-?>
+<div>
+    <form action="BuatTubes.php" method="GET">
+    <input type="hidden" name="kodeMataKuliah" value="<?= $_GET['kodeMataKuliah'] ?>">
+    <input type="hidden" name="namaMataKuliah" value="<?= $_GET['namaMataKuliah'] ?>">
+    <input type="hidden" name="kelas" value="<?= $_GET['kodeKelas']?>">
+    <input type="hidden" name="semester" value="<?= $_GET['semester']?>">
+    <?php
+        if ($_SESSION["tipePengguna"]="dosen"){
+        echo '<button type="submit"> Make a New Tubes</button>';
+        };
+    ?>
+    </form>
+</div>
 
 </body>
 </html>
