@@ -2,7 +2,7 @@
 $serverName = "localhost";
 $username   = "root";
 $password   = "";
-$database   = "testingrpl";
+$database   = "projectrpl";
 
 // Create connection
 $conn = mysqli_connect($serverName, $username, $password, $database);

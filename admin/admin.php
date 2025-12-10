@@ -22,7 +22,7 @@
         </head>
         <body>
             <div id="btnBack">
-                <p> <a href="logout.php">⮌</a></p>
+                <p> <a href="../login.html">⮌</a></p>
             </div>
 
             <div id="container">    
