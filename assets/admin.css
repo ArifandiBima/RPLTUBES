@@ -1,28 +1,50 @@
+:root{
+    --background: #F0F2F5;
+    --card-container: #FFFFFF;
+    --primary-color: #4A90E2;
+    --text-color: #333333;
+    --accent: #357ABD;
+}
+
 body {
     margin: 0;
     padding: 0;
     height: 100vh;
-    background-color: #C4C4C4; 
+    background-color: var(--background); 
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 #btnBack {
-    position: absolute; 
+    position: absolute;
     top: 0px;              
     left: 5px;         
+    align-items: center;        
+    justify-content: center;    
+    gap: 8px;                   
     
-    font-size: 30px;
-    font-weight: bold;
-    color:#35BC55;
+    margin-top: 10px;
+    padding: 10px 24px;         
+    
+    text-decoration: none;                     
+    font-weight: 600;
+    font-size: 20px;
 }
 
+#btnBack a{
+    text-decoration: none;
+    color: #666; 
+}
 
 #container {
     display: flex;
     flex-direction: column;
-    gap: 20px;     
+    gap: 20px;   
+    background-color: var(--card-container); 
+    padding: 25px; 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
 }
 
 button {
