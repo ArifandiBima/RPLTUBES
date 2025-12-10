@@ -1,0 +1,116 @@
+body, html {
+  background: #dcdcdc;
+}
+
+
+.outer { display: flex; align-items: center; justify-content: center; padding: 28px; }
+.inner {
+  width: calc(100% - 160px);
+  max-width: 1100px;
+  background: #dcdcdc; /* light panel */
+  padding: 48px 60px;
+  border-radius: 3px;
+  box-sizing: border-box;
+  position: relative;
+  min-height: 480px;
+}
+
+/* Back icon top-left */
+.back {
+  position: fixed;
+  left: 50px;
+  top: 26px;
+  font-size: 36px;
+  color: #1f7a36;
+  text-decoration: none;
+
+  border: 3px solid #1f7a36;
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #dcdcdc; /* optional: prevents clash with background */
+  z-index: 999; /* keep it above all elements */
+}
+
+
+/* top small info */
+.top-info { display:flex; gap:18px; margin-bottom: 18px; align-items:flex-start; }
+.matkul { font-weight:700; color:#1f7a36; font-size:20px; }
+.kode { color:#135c2d; font-size:16px; }
+
+/* Page title */
+h1 {
+  font-size: 36px;
+  color: #0c5d31;
+  margin: 12px 0 26px;
+  font-weight: 700;
+}
+
+/* Empty / notice */
+.notice, .empty {
+  background: #fff9e6;
+  border-left: 6px solid #f0b400;
+  padding: 14px;
+  border-radius: 8px;
+  color:#333;
+}
+
+/* Table */
+.group-table {
+  width: 80%;
+  border-collapse: collapse;
+  margin-top: 22px;
+  margin-bottom: 20px;
+  background: #274b34;
+  color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.group-table thead th {
+  background: #15421b;
+  color: #fff;
+  padding: 14px 18px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.group-table tbody td {
+  background: rgba(0,0,0,0.08);
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  vertical-align: middle;
+  color: #dff0dd;
+}
+
+/* radio cell */
+.radio-cell { width: 60px; text-align:center; }
+.group-letter { width: 60px; font-weight:700; color:#cde5d1; }
+
+/* actions area */
+.actions { display: flex; justify-content: flex-end; margin-top: 18px; }
+
+/* primary CTA (blue rounded pill) */
+.primary-btn {
+  display: inline-block;
+  background: linear-gradient(180deg,#7ea1f6,#5f74d9);
+  color: #fff;
+  padding: 14px 28px;
+  font-size: 18px;
+  border-radius: 20px;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 6px 0 rgba(0,0,0,0.12);
+}
+
+/* responsive */
+@media (max-width: 900px) {
+  .group-table { width: 100%; font-size: 14px; }
+  .inner { padding: 28px; }
+}

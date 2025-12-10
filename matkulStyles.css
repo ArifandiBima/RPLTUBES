@@ -64,8 +64,8 @@ body {
 .container {
     padding: 20px 40px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+    gap: 80px;
 }
 
 .card {
