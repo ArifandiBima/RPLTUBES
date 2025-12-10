@@ -1,6 +1,7 @@
 <?php
 // 1. Koneksi Database
 require 'conn.php';
+session_start();
 
 // 2. Definisi Konteks (Simulasi Input Mahasiswa/URL Parameter)
 // ------------------------------------------
@@ -11,13 +12,21 @@ require 'conn.php';
 // $nama_tb = 'Project Algoritma'; 
 // $npm_mahasiswa = '2200000002'; // <-- PERUBAHAN: Menggunakan NPM Siti Aminah
 
-$kode_mk = $_GET['kode_mk'] ?? '';
-$kode_kelas = $_GET['kode_kelas'] ?? '';
+$kode_mk = $_GET['kodeMataKuliah'] ?? '';
+$kode_kelas = $_GET['kodeKelas'] ?? '';
 // Khusus semester, pastikan di-cast ke integer
 $semester = isset($_GET['semester']) ? (int)$_GET['semester'] : 0;
-$nama_tb = $_GET['nama_tb'] ?? '';
-$npm_mahasiswa = $_GET['npm'] ?? '';
+$nama_tb = $_GET['namaTugasBesar'] ?? '';
+$npm_mahasiswa = $_SESSION['npm'] ?? '';
 
+$data = array(
+    'namaMataKuliah' => 'Algoritma',
+    'kodeMataKuliah' => 'IF101',
+    'kodeKelas'   => 'A',
+    'semester'       => 1,
+    'namaTugasBesar' => "Project Algoritma"
+
+);
 // Inisialisasi variabel
 $tugas_besar = [];
 $data_kelompok = [];
@@ -192,7 +201,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['
                 $message = "success:Anda telah berhasil $message_text ke Kelompok " . $kelompok_label($target_kelompok) . ".";
                 
                 // Setelah sukses, reload untuk update tampilan
-                header("Location: " . $_SERVER['PHP_SELF'] . "?msg=" . urlencode($message));
+                header("Location: " . $_SERVER['PHP_SELF'] . "?" . http_build_query($data)); exit;
                 exit;
 
             } catch (mysqli_sql_exception $exception) {

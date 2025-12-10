@@ -1,27 +1,33 @@
 <?php
 // 1. Koneksi Database
 require 'conn.php';
-
+session_start();
 
 // ------------------------------------------
 // 2. Definisi Konteks Tugas Besar (Simulasi Input Dosen/URL Parameter)
 // ------------------------------------------
 // GANTI NILAI SESUAI DI DATABASE NANTI!
-$kode_mk = 'IF101'; 
-$kode_kelas = 'A';   
-$semester = 1;      
-$nama_tb = 'Project Algoritma'; 
-$nik_dosen = '1980010123456789'; // NIK Dosen yang sedang login
+// $kode_mk = 'IF101'; 
+// $kode_kelas = 'A';   
+// $semester = 1;      
+// $nama_tb = 'Project Algoritma'; 
+// $nik_dosen = '1980010123456789'; // NIK Dosen yang sedang login
 
 // // BARIS BARU (Mengambil nilai dari URL menggunakan GET)
 // // Gunakan operator Null Coalescing (??) untuk nilai default agar tidak error jika parameter tidak ada.
-// $kode_mk = $_GET['kode_mk'] ?? ''; 
-// $kode_kelas = $_GET['kode_kelas'] ?? ''; 
-// // Khusus semester, tambahkan pengecekan isset dan cast ke integer (int)
-// $semester = isset($_GET['semester']) ? (int)$_GET['semester'] : 0;
-// $nama_tb = $_GET['nama_tb'] ?? ''; 
-// $nik_dosen = $_GET['nik_dosen'] ?? ''; // NIK Dosen yang sedang login, diambil dari URL
-
+$kode_mk = $_GET['kodeMataKuliah'] ?? ''; 
+$kode_kelas = $_GET['kodeKelas'] ?? ''; 
+// Khusus semester, tambahkan pengecekan isset dan cast ke integer (int)
+$semester = isset($_GET['semester']) ? (int)$_GET['semester'] : 0;
+$nama_tb = $_GET['namaTugasBesar'] ?? ''; 
+$nik_dosen = $_SESSION['nik'] ?? ''; // NIK Dosen yang sedang login, diambil dari URL
+$data = array(
+    'namaMataKuliah' => 'Algoritma',
+    'kodeMataKuliah' => 'IF101',
+    'kodeKelas'   => 'A',
+    'semester'       => 1,
+    'namaTugasBesar' => "Project Algoritma"
+);
 // Inisialisasi variabel untuk menghindari error
 $tugas_besar = [];
 $data_kelompok = [];
@@ -329,8 +335,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($tugas_besar)) {
     }
     
     // Redirect dengan pesan
-    header("Location: " . $_SERVER['PHP_SELF'] . "?msg=" . urlencode($temp_message));        
-    exit;
+    header("Location: " . $_SERVER['PHP_SELF'] . "?" . http_build_query($data));    exit;
 }
 
 
