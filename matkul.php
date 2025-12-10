@@ -6,7 +6,7 @@ if ($_SESSION["tipePengguna"]==2){
 else{
     $id = $_SESSION["npm"];
 }
-$nextTarget = $_SESSION["pilih_kelompok.php"];
+$nextTarget = "TubesSelect.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,7 +93,7 @@ $nextTarget = $_SESSION["pilih_kelompok.php"];
             FROM MataKuliah
             WHERE kodeMataKuliah in (
                 SELECT kodeMataKuliah
-                FROM kelas
+                FROM pengampu
                 WHERE nikPengampu = ?  and semester = ?
             
             );
