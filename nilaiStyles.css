@@ -1,0 +1,118 @@
+/* ===== GLOBAL ===== */
+body {
+    margin: 0;
+    padding: 0;
+    background: #1b1b1b;
+    font-family: 'Poppins', sans-serif;
+}
+
+.container {
+    width: 95%;
+    margin: auto;
+    background: #d9d9d9;
+    min-height: 100vh;
+    padding: 40px 60px;
+    border-radius: 8px;
+}
+
+h1, h2 {
+    color: #0c5d31;
+    font-weight: 700;
+}
+
+.back-btn {
+    font-size: 60px;
+    color: #0c5d31;
+    text-decoration: none;
+}
+
+.header-course {
+    font-size: 28px;
+    margin-left: 20px;
+    color: #0c5d31;
+}
+
+/* ===== TABLE ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+
+
+td {
+    background: #355f31;
+    color: white;
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #4a7a45;
+}
+
+/* ============================
+   HEADER
+============================ */
+thead, tbody {
+    display: table;
+    width: 100%;
+    table-layout: fixed; /* Enforces exact same column model */
+}
+
+th {
+    color:white;
+    background-color: #184f17;
+    padding: 16px;
+    text-align: left;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+/* ===== FORM AREA ===== */
+.form-area {
+    margin-top: 40px;
+    background: white;
+    border-radius: 18px;
+    padding: 25px;
+}
+
+.select-small {
+    padding: 8px 14px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    margin-right: 10px;
+    background: #a6aadb;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    padding: 15px;
+    font-size: 16px;
+}
+
+.submit-btn {
+    margin-top: 15px;
+    background: #5d88ff;
+    padding: 12px 30px;
+    color: white;
+    font-size: 18px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background: #4c74e0;
+}
+
+/* Hover effect */
+tbody tr:hover td {
+    background-color: #207020;
+
+}
