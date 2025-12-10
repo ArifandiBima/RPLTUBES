@@ -1,0 +1,8 @@
+Format file CSV wajib
+A: KodeMK	B: NamaMK	C: Kls	D: Sem	E: NamaMhs	F: NPM	G: NamaDosen	H: NIK
+AIF01	    Web	        A	    1	    Budi	    618..	Siska	        199..
+
+Tipe pengguna:
+1 --> Admin
+2 --> Dosen 
+3 --> Mahasiswa   

@@ -4,15 +4,18 @@
     <link rel="stylesheet" href="main.css">
     <style>
         body{
-            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
+        input[type="text"], input[type="password"]{
+            width: 162px;
+        }
+
         section{
             height: 150px;
-            width: 205px;
+            width: 200px;
             padding: 20px;
             display: flex;
             flex-wrap: wrap;
@@ -29,12 +32,12 @@
 </head>
 <body>
     <main>
-        <form action="login" method="post">
+        <form action="verification.php" method="post">
             <section class="box">
                 <span class="form-label">Username</span>:<br>
-                <input type="text" name="username"/><br>
+                <input type="text" name="username" required/><br>
                 <span class="form-label">Password</span>:<br>
-                <input type="password" name="password"/><br>
+                <input type="password" name="password" required/><br>
             </section>
             <input class="btn" type="submit" value="Sign in">
         </form>

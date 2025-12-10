@@ -24,23 +24,28 @@
 
 <form class="formContainer" method="POST" action="mintaKomponen.php">
 
+    <input type="hidden" name="kodeMatkul" value="<?= $_GET['kodeMataKuliah'] ?>">
+    <input type="hidden" name="namaMatkul" value="<?= $_GET['namaMataKuliah'] ?>">
+    <input type="hidden" name="kelas" value="<?= $_GET['kelas'] ?? 'A' ?>">
+    <input type="hidden" name="semester" value="<?= $_GET['semester'] ?? 1 ?>">
+
     <label>Nama Tugas Besar:</label>
-    <input type="text" placeholder="">
+    <input type="text" name="namaTB" required>
 
     <label>Banyak Komponen Penilaian:</label>
-    <input type="number" class="smallInput" name="banyakKomponen">
+    <input type="number" class="smallInput" name="banyakKomponen" required>
 
     <label>Banyak Anggota dalam Kelompok:</label>
-    <input type="number" class="smallInput">
+    <input type="number" class="smallInput" name="banyakAnggota" required>
 
     <div class="checkboxRow">
-        <input type="checkbox" id="auto">
+        <input type="checkbox" id="auto" name="auto" value="1"> 
         <label for="auto">Auto Generate Teams</label>
     </div>
 
     <button class="saveBtn">Save</button>
-
 </form>
+
 
 </body>
 </html>

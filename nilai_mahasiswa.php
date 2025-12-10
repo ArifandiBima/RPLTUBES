@@ -1,5 +1,5 @@
 <?php
-// contoh data — ganti dengan query database
+// contoh data, ganti jd query database
 $komponen = [
     ["Komponen1", "10/8/2025", 120, "Keju kurang banyak"],
     ["Komponen2", "10/10/2025", 13, ""]
@@ -48,4 +48,3 @@ $komponen = [
 </div>
 </body>
 </html>
-
