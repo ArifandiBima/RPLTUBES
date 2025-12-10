@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once 'conn.php';
 
 $namaTugasBesar = $_GET["namaTugasBesar"] ?? "";
 $selectedOption = $_POST["dropdown"] ?? "";
