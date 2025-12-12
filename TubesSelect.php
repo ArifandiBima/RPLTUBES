@@ -11,7 +11,7 @@ session_start();?>
 <body>
 
 <div class="header">
-    <div class="back-btn">⮌</div>
+    <a class="back-btn" href="matkul.php">⮌</a>
 
     <div class="profile-card">
         <div class="profile-icon"></div>
