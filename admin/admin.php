@@ -147,17 +147,17 @@ if ($role == 2) {
                         
                         <?php if ($role == 2): ?>
                             
-                            <a href="kelola_user.php?<?= $params ?>" class="btn-action btn-kelompok">Edit Kelompok</a>
+                            <a href="dosen_edit_kelompok_controller.php?<?= $params ?>" class="btn-action btn-kelompok">Edit Kelompok</a>
                             <a href="rubrik.php?<?= $params ?>" class="btn-action btn-rubrik">Edit Rubrik</a>
                             <a href="nilai_dosen.php?<?= $params ?>" class="btn-action btn-nilai">Edit Nilai</a>
 
                         <?php elseif ($role == 3): ?>
 
-                            <a href="pilih_kelompok.php?<?= $params ?>" class="btn-action btn-kelompok">
+                            <a href="mahasiswa_pilih_kelompok_controller.php?<?= $params ?>" class="btn-action btn-kelompok">
                                 Lihat Kelompok
                             </a>
 
-                            <a href="lihat_nilai.php?<?= $params ?>" class="btn-action btn-nilai">
+                            <a href="nilai_mahasiswa.php?<?= $params ?>" class="btn-action btn-nilai">
                                 Lihat Nilai
                             </a>
 
