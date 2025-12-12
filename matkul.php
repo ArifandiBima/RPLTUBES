@@ -6,7 +6,7 @@ if ($_SESSION["tipePengguna"]==2){
 else{
     $id = $_SESSION["npm"];
 }
-$nextTarget = $_SESSION["pilih_kelompok.php"];
+$nextTarget = "TubesSelect.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -31,29 +31,31 @@ $nextTarget = $_SESSION["pilih_kelompok.php"];
 
 </div>
 <div id="year-container">
-    <select class="year-select">
-    <?php
+    <form class = "year-select-form" action="matkul.php" method="GET">
+
+        <select class="year-select" onchange="this.form.submit();">
+        <?php
     $semester=0;
     if ($_SESSION["tipePengguna"]==3)
-    $querySemester = "
-        SELECT DISTINCT semester
-        FROM peserta
-        WHERE npmPeserta = ?
-        ORDER BY semester
+        $querySemester = "
+    SELECT DISTINCT semester
+    FROM peserta
+    WHERE npmPeserta = ?
+    ORDER BY semester
     ";
     else if ($_SESSION["tipePengguna"]==2)
         $querySemester = "
-        SELECT DISTINCT semester
-        FROM pengampu
-        WHERE nikPengampu = ? 
-        ORDER BY semester
+    SELECT DISTINCT semester
+    FROM pengampu
+    WHERE nikPengampu = ? 
+    ORDER BY semester
     ";
     else{
         $querySemester = "
         SELECT DISTINCT semester
         FROM kelas
         ORDER BY semester
-    ";
+        ";
     }
     $stmt = $conn->prepare($querySemester);
     $stmt->bind_param("s", $id);
@@ -69,6 +71,7 @@ $nextTarget = $_SESSION["pilih_kelompok.php"];
         echo $row["semester"]."</option>";
     }
     ?>
+    </form>
     </select>
 </div>
 
@@ -93,7 +96,7 @@ $nextTarget = $_SESSION["pilih_kelompok.php"];
             FROM MataKuliah
             WHERE kodeMataKuliah in (
                 SELECT kodeMataKuliah
-                FROM kelas
+                FROM pengampu
                 WHERE nikPengampu = ?  and semester = ?
             
             );
@@ -114,11 +117,16 @@ $nextTarget = $_SESSION["pilih_kelompok.php"];
     $stmt->bind_param("si", $id, $semester);
     $stmt->execute();
     $result = $stmt->get_result();
-
+    $data = array(
+        'namaMataKuliah' => 'Algoritma',
+        'kodeMataKuliah' => 'IF101',
+        'kodeKelas'   => 'A',
+        'semester'       => 1
+    );
     while ($row = $result->fetch_assoc()) {
-        echo '<a href = "'.$nextTarget.'"><div class="card">'.
+        echo '<a href = "'.$nextTarget.'?'.http_build_query($data).'"><div class="card">'.
         $row["kodeMataKuliah"].'<br>'.
-        $row["namaMataKuliah"].'</div>';
+        $row["namaMataKuliah"].'</div></a>';
     }
     
     ?>

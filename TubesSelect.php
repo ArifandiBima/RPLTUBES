@@ -11,7 +11,7 @@ session_start();?>
 <body>
 
 <div class="header">
-    <div class="back-btn">⮌</div>
+    <a class="back-btn" href="matkul.php">⮌</a>
 
     <div class="profile-card">
         <div class="profile-icon"></div>
@@ -25,9 +25,6 @@ session_start();?>
 </div>
 
 <div class="container">
-    <div class = "card">
-        Pembuatan Keju
-    </div>
     <?php
     $queryTubes = "
     SELECT namaTugasBesar
@@ -45,16 +42,10 @@ session_start();?>
         'kodeKelas'   => $_GET["kodeKelas"],
         'semester'       => $_GET["semester"]
     );
-    $targetLocation = "index.php";
-    if ($_SESSION["tipePengguna"]==2){
-        $targetLocation = "pilih_kelompok.php";
-    }
-    else if ($_SESSION["tipePengguna"]==3){
-        $targetLocation = "pilih_kelompok.php";
-    }
+    $targetLocation = "admin/admin.php";
     while ($row = $result->fetch_assoc()) {
         $data["namaTugasBesar"] = $row["namaTugasBesar"];
-        echo '<a href ="'.$targetLocation.'?'.http_build_query($data).'<div class="card">'.$row["namaTugasBesar"].'</div>';
+        echo '<a class="card" href ="'.$targetLocation.'?'.http_build_query($data).'">'.$row["namaTugasBesar"].'</a>';
     }
     ?>
 </div>
