@@ -3,9 +3,7 @@
 require 'conn.php';
 session_start();
 
-// ------------------------------------------
-// 2. Definisi Konteks Tugas Besar (Simulasi Input Dosen/URL Parameter)
-// ------------------------------------------
+// 2. Input Dosen
 // GANTI NILAI SESUAI DI DATABASE NANTI!
 // $kode_mk = 'IF101'; 
 // $kode_kelas = 'A';   
@@ -36,14 +34,12 @@ $message = '';
 $notification_class = ''; 
 $message_type = ''; // Untuk view
 
-// Fungsi utilitas untuk label kelompok (1=A, 2=B, ...)
+// Fungsi untuk label kelompok (1=A, 2=B, ...)
 $kelompok_label = function($nomor) {
     return chr(64 + $nomor);
 };
 
-// ------------------------------------------
 // 3. Ambil Data Tugas Besar & Konteks Dosen
-// ------------------------------------------
 $sql_select_tb = "
     SELECT 
         tb.namaTugasBesar AS nama,
@@ -83,9 +79,7 @@ $stmt_tb->close();
 
 // Pastikan tugas besar ditemukan sebelum lanjut
 if (!empty($tugas_besar)) {
-    // ------------------------------------------
     // 4. Ambil Data Kelompok dan Anggota
-    // ------------------------------------------
     $sql_kelompok = "
         SELECT 
             k.nomorKelompok,
@@ -132,10 +126,7 @@ if (!empty($tugas_besar)) {
     $stmt_k->close();
     $data_kelompok = $data_kelompok_temp;
 
-
-    // ------------------------------------------
     // 5. Ambil Mahasiswa Belum Berkelompok
-    // ------------------------------------------
     $sql_belum = "
         SELECT 
             m.npm, m.nama 
@@ -168,9 +159,7 @@ if (!empty($tugas_besar)) {
 }
 
 
-// ************************************************
-// LOGIKA UNTUK ACTION FORM
-// ************************************************
+// ACTION FORM
 if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($tugas_besar)) {
     $action = $_POST['action'] ?? '';
     
@@ -179,7 +168,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($tugas_besar)) {
 
     try {
         if ($action === 'create_group') {
-            // Aksi: CREATE GROUP
+            // CREATE GROUP
             $sql_max_nomor = "SELECT MAX(nomorKelompok) AS max_nomor FROM kelompok WHERE namaTugasBesar = ? AND kodeMataKuliah = ? AND kodeKelas = ? AND semester = ?";
             $stmt_max = $conn->prepare($sql_max_nomor);
             $stmt_max->bind_param("sssi", $nama_tb, $kode_mk, $kode_kelas, $semester);
@@ -191,7 +180,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($tugas_besar)) {
             
             $sql_insert_kelompok = "INSERT INTO kelompok (namaTugasBesar, kodeMataKuliah, kodeKelas, semester, nomorKelompok) VALUES (?, ?, ?, ?, ?)";
             $stmt_insert = $conn->prepare($sql_insert_kelompok);
-            // FIX BIND PARAM: sssi i (5 parameter)
             $stmt_insert->bind_param("sssi", $nama_tb, $kode_mk, $kode_kelas, $semester, $next_nomor);
             $stmt_insert->execute();
             $stmt_insert->close();
@@ -199,7 +187,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($tugas_besar)) {
             $temp_message = 'success:Kelompok ' . $kelompok_label($next_nomor) . ' berhasil ditambahkan.';
 
         } elseif ($action === 'remove_member') {
-            // Aksi: REMOVE MEMBER
+            // REMOVE MEMBER
             $npm_target = $_POST['npm'] ?? '';
             
             $sql_delete = "
@@ -207,7 +195,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($tugas_besar)) {
                 WHERE npmPeserta = ? AND namaTugasBesar = ? AND kodeMataKuliah = ? AND kodeKelas = ? AND semester = ?
             ";
             $stmt_delete = $conn->prepare($sql_delete);
-            // FIX BIND PARAM: s s s s i (5 parameter)
             $stmt_delete->bind_param("ssssi", $npm_target, $nama_tb, $kode_mk, $kode_kelas, $semester);
             $stmt_delete->execute();
             $stmt_delete->close();
@@ -215,9 +202,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($tugas_besar)) {
             $temp_message = 'success:Mahasiswa ' . $npm_target . ' berhasil dikeluarkan dari kelompok.';
 
         } elseif ($action === 'manual_insert') {
-            // Aksi: MANUAL INSERT
+            // MANUAL INSERT
             $npm_target = $_POST['npm_target'] ?? '';
-            // Pastikan kelompok target adalah integer
             $kelompok_target = (int)($_POST['kelompok_target'] ?? 0); 
             
             if (empty($npm_target) || $kelompok_target == 0) {
@@ -235,7 +221,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($tugas_besar)) {
                         WHERE npmPeserta = ? AND namaTugasBesar = ? AND kodeMataKuliah = ? AND kodeKelas = ? AND semester = ?
                     ";
                     $stmt_delete_old = $conn->prepare($sql_delete_old);
-                    // FIX BIND PARAM: s s s s i (5 parameter)
                     $stmt_delete_old->bind_param("ssssi", $npm_target, $nama_tb, $kode_mk, $kode_kelas, $semester);
                     $stmt_delete_old->execute();
                     $stmt_delete_old->close();
@@ -246,7 +231,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($tugas_besar)) {
                         VALUES (?, ?, ?, ?, ?, ?)
                     ";
                     $stmt_insert = $conn->prepare($sql_insert);
-                    // BIND PARAM: s s s i i s (6 parameter)
                     $stmt_insert->bind_param("sssiis", $nama_tb, $kode_mk, $kode_kelas, $semester, $kelompok_target, $npm_target);
                     $stmt_insert->execute();
                     $stmt_insert->close();
@@ -256,14 +240,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($tugas_besar)) {
             }
 
         } elseif ($action === 'toggle_lock') {
-            // Aksi: LOCK/UNLOCK
+            // LOCK/UNLOCK TUGAS BESAR
             $current_lock_status = $tugas_besar['is_locked'] ?? 0;
             $new_lock_status = 1 - $current_lock_status; 
             
+            // SET LOCK/NOT LOCKED
             $sql_update_lock = "UPDATE tugasBesar SET isLocked = ? WHERE namaTugasBesar = ? AND kodeMataKuliah = ? AND kodeKelas = ? AND semester = ?";
             $stmt_update = $conn->prepare($sql_update_lock);
             
-            // BIND PARAM: i s s s i (5 parameter)
             $stmt_update->bind_param("isssi", $new_lock_status, $nama_tb, $kode_mk, $kode_kelas, $semester);
             $stmt_update->execute();
             $stmt_update->close();
@@ -272,17 +256,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($tugas_besar)) {
             $temp_message = 'success:Status pemilihan kelompok berhasil diubah menjadi: ' . $action_text . '.';
 
         } elseif ($action === 'auto_fill') {
-            // Aksi: AUTO FILL
-            $mahasiswa_yang_dimasukkan = [];
-            // Ambil ulang data kelompok dan belum berkelompok untuk operasi yang akurat
-            // Dalam contoh ini, kita menggunakan data yang sudah di-load di awal controller
-            
+            // AUTO FILL
+            $mahasiswa_yang_dimasukkan = [];        
             // Urutkan kelompok berdasarkan sisa slot
             $kelompok_sorted = $data_kelompok;
             usort($kelompok_sorted, function($a, $b) {
                 $sisa_a = $a['kapasitas'] - $a['terisi'];
                 $sisa_b = $b['kapasitas'] - $b['terisi'];
-                return $sisa_b - $sisa_a; // Urutkan dari slot terbanyak ke tersedikit
+                // Urutkan dari slot terbanyak ke tersedikit
+                return $sisa_b - $sisa_a; 
             });
             
             $idx_mhs = 0;
@@ -293,6 +275,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($tugas_besar)) {
                 
                 if ($sisa_slot <= 0) continue;
 
+                // MEMASUKAN MAHASISWA KE KELOMPOK 
                 for ($i = 0; $i < $sisa_slot; $i++) {
                     if (isset($mahasiswa_belum_kelompok[$idx_mhs])) {
                         $mhs_target = $mahasiswa_belum_kelompok[$idx_mhs];
@@ -304,7 +287,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($tugas_besar)) {
                             VALUES (?, ?, ?, ?, ?, ?)
                         ";
                         $stmt_insert = $conn->prepare($sql_insert);
-                        // BIND PARAM: s s s i i s (6 parameter)
                         $stmt_insert->bind_param("sssiis", $nama_tb, $kode_mk, $kode_kelas, $semester, $nomor, $npm_target);
                         $stmt_insert->execute();
                         $stmt_insert->close();
@@ -343,9 +325,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !empty($tugas_besar)) {
 $conn->close();
 
 
-// ************************************************
-// LOGIKA UNTUK MENGAMBIL PESAN DARI URL
-// ************************************************
+// MENGAMBIL PESAN DARI URL
 if (isset($_GET['msg'])) {
     $get_message = htmlspecialchars(urldecode($_GET['msg']));
     
@@ -363,8 +343,6 @@ if (isset($_GET['msg'])) {
 }
 
 
-// ------------------------------------------
-// 6. Tampilkan View
-// ------------------------------------------
+// 6. Tampilkan View (HTML)
 require 'dosen_edit_kelompok_view.php'; 
 ?>
