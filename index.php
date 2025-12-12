@@ -1,5 +1,5 @@
 <?php
     session_start();
     $_SESSION=array();
-    header("Location : login.html");
+    header("Location: login.html");
 ?>

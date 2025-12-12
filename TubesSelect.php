@@ -56,7 +56,7 @@ session_start();?>
     <input type="hidden" name="kelas" value="<?= $_GET['kodeKelas']?>">
     <input type="hidden" name="semester" value="<?= $_GET['semester']?>">
     <?php
-        if ($_SESSION["tipePengguna"]="dosen"){
+        if ($_SESSION["tipePengguna"]=="2"){
         echo '<button type="submit"> Make a New Tubes</button>';
         };
     ?>
