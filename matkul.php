@@ -4,9 +4,9 @@ if ($_SESSION["tipePengguna"]==2){
     $id = $_SESSION["nik"];
 }
 else{
-    $id = $_SESSION["npm"];
+    $id = $_SESSION["npm"]??0;
 }
-$nextTarget = $_SESSION["pilih_kelompok.php"];
+$nextTarget = "TubesSelect.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,7 +19,8 @@ $nextTarget = $_SESSION["pilih_kelompok.php"];
 <body>
 
 <div class="header">
-    <div class="back-btn">⮌</div>
+
+    <a href=<?php if ($_SESSION["tipePengguna"]==1) echo "admin/admin.php"; else echo "index.php"?>class="back-btn">⮌</a>
 
     <div class="profile-card">
         <div class="profile-icon"></div>
@@ -31,29 +32,31 @@ $nextTarget = $_SESSION["pilih_kelompok.php"];
 
 </div>
 <div id="year-container">
-    <select class="year-select">
-    <?php
+    <form class = "year-select-form" action="matkul.php" method="GET">
+
+        <select class="year-select" onchange="this.form.submit();">
+        <?php
     $semester=0;
     if ($_SESSION["tipePengguna"]==3)
-    $querySemester = "
-        SELECT DISTINCT semester
-        FROM peserta
-        WHERE npmPeserta = ?
-        ORDER BY semester
+        $querySemester = "
+    SELECT DISTINCT semester
+    FROM peserta
+    WHERE npmPeserta = ?
+    ORDER BY semester
     ";
     else if ($_SESSION["tipePengguna"]==2)
         $querySemester = "
-        SELECT DISTINCT semester
-        FROM pengampu
-        WHERE nikPengampu = ? 
-        ORDER BY semester
+    SELECT DISTINCT semester
+    FROM pengampu
+    WHERE nikPengampu = ? 
+    ORDER BY semester
     ";
     else{
         $querySemester = "
         SELECT DISTINCT semester
         FROM kelas
         ORDER BY semester
-    ";
+        ";
     }
     $stmt = $conn->prepare($querySemester);
     $stmt->bind_param("s", $id);
@@ -69,6 +72,7 @@ $nextTarget = $_SESSION["pilih_kelompok.php"];
         echo $row["semester"]."</option>";
     }
     ?>
+    </form>
     </select>
 </div>
 
@@ -76,49 +80,42 @@ $nextTarget = $_SESSION["pilih_kelompok.php"];
     <?php
     if ($_SESSION["tipePengguna"]==3){
         $queryMatkul = "
-            SELECT kodeMataKuliah, namaMataKuliah
-            FROM MataKuliah
-            WHERE kodeMataKuliah in (
-                SELECT kodeMataKuliah
-                FROM peserta
-                WHERE npmPeserta = ?  and semester = ?
-            
-            );
+            SELECT mataKuliah.kodeMataKuliah, namaMataKuliah, kodeKelas
+            FROM mataKuliah
+            INNER JOIN peserta ON mataKuliah.kodeMataKuliah=peserta.kodeMataKuliah
+            WHERE npmPeserta = ?  and semester = ?;
         ";
             
     }
     else if ($_SESSION["tipePengguna"]==2)
         $queryMatkul = "
-            SELECT kodeMataKuliah, namaMataKuliah
-            FROM MataKuliah
-            WHERE kodeMataKuliah in (
-                SELECT kodeMataKuliah
-                FROM kelas
-                WHERE nikPengampu = ?  and semester = ?
-            
-            );
+            SELECT mataKuliah.kodeMataKuliah, namaMataKuliah, kodeKelas
+            FROM mataKuliah
+            INNER JOIN pengampu ON mataKuliah.kodeMataKuliah=pengampu.kodeMataKuliah
+            WHERE nikPengampu = ?  and semester = ?;
         ";
     else{
         $queryMatkul = "
-            SELECT kodeMataKuliah, namaMataKuliah
-            FROM MataKuliah
-            WHERE kodeMataKuliah in (
-                SELECT kodeMataKuliah
-                FROM peserta
-                WHERE ((npmPeserta = ?) OR True)  and semester = ?
-            
-            );
+            SELECT mataKuliah.kodeMataKuliah, namaMataKuliah, kodeKelas
+            FROM mataKuliah
+            INNER JOIN pengampu ON mataKuliah.kodeMataKuliah=pengampu.kodeMataKuliah
+            WHERE ((semester = ?) OR True)  and semester = ?;
         ";
     }
     $stmt = $conn->prepare($queryMatkul);
     $stmt->bind_param("si", $id, $semester);
     $stmt->execute();
     $result = $stmt->get_result();
-
     while ($row = $result->fetch_assoc()) {
-        echo '<a href = "'.$nextTarget.'"><div class="card">'.
+        $data = array(
+            'namaMataKuliah' => $row['namaMataKuliah'],
+            'kodeMataKuliah' => $row['kodeMataKuliah'],
+            'kodeKelas'   => $row['kodeKelas'],
+            'semester'       => $semester
+        );
+        echo '<a href = "'.$nextTarget.'?'.http_build_query($data).'"><div class="card">'.
         $row["kodeMataKuliah"].'<br>'.
-        $row["namaMataKuliah"].'</div>';
+        $row["namaMataKuliah"].'</div></a>';
     }
     
     ?>

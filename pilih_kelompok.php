@@ -74,11 +74,11 @@ $groups = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     <?php else: ?>
       <form method="GET" action="nilai_dosen.php" id="pilihForm">
         <!-- pass necessary values to nilai_dosen.php -->
-        <input type="hidden" name="kodeMatkul" value="<?= htmlspecialchars($kodeMatkul) ?>">
-        <input type="hidden" name="namaMatkul" value="<?= htmlspecialchars($namaMatkul) ?>">
-        <input type="hidden" name="namaTB" value="<?= htmlspecialchars($namaTB) ?>">
-        <input type="hidden" name="kelas" value="<?= htmlspecialchars($kelas) ?>">
+        <input type="hidden" name="kodeMataKuliah" value="<?= htmlspecialchars($kodeMatkul) ?>">
+        <input type="hidden" name="namaTugasBesar" value="<?= htmlspecialchars($namaTB) ?>">
+        <input type="hidden" name="kodeKelas" value="<?= htmlspecialchars($kelas) ?>">
         <input type="hidden" name="semester" value="<?= htmlspecialchars($semester) ?>">
+
 
         <table class="group-table">
           <thead>
@@ -127,7 +127,7 @@ $groups = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
             ?>
             <tr>
               <td class="radio-cell">
-                <input type="radio" name="kelompok" value="<?= $g ?>" required>
+                <input type="radio" name="nomorKelompok" value="<?= $g ?>" required>
               </td>
               <td class="group-letter"><?= htmlspecialchars(chr(64 + $g)) ?></td>
               <td class="members"><?= htmlspecialchars($names_str) ?></td>
@@ -145,14 +145,14 @@ $groups = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
   </div>
 
 <script>
-// optional: nicer client-side validation: ensure radio selected
 document.getElementById('pilihForm')?.addEventListener('submit', function(e){
-  if (!document.querySelector('input[name="kelompok"]:checked')) {
+  if (!document.querySelector('input[name="nomorKelompok"]:checked')) {
     e.preventDefault();
     alert('Pilih salah satu kelompok dulu.');
   }
 });
 </script>
+
 
 </body>
 </html>

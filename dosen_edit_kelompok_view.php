@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Dosen: Edit Kelompok - <?php echo $tugas_besar['namaMK'] ?? 'Tugas Besar'; ?></title> 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="kelompokstyle.css">
     <script src="script.js"></script>
 </head>
 <body>
 
 <div class="header-top-nav">
     <div class="left-nav">
-        <a href="home.php" class="btn-nav back-btn">
+        <a <?php echo 'href="admin/admin.php?'.http_build_query($data).'"'?> class="btn-nav back-btn">
             <span class="arrow">←</span> Kembali
         </a>
     </div>
     <div class="right-nav">
-        <a href="home.php" class="btn-nav profile-btn">
+        <a href="matkul.php" class="btn-nav profile-btn">
             <?= htmlspecialchars($tugas_besar['namaDosen'] ?? 'Dosen'); ?> 👤
         </a>
     </div>
@@ -97,7 +97,7 @@
                     <button type="submit" name="action" value="toggle_lock"
                             formnovalidate
                             class="btn <?= $is_locked ? 'warning' : 'danger'; ?>" 
-                            onclick="return confirm('Yakin ingin <?= $is_locked ? 'MEMBUKA KUNCI' : 'MENGUNCI'; ?> pemilihan kelompok? Tindakan ini akan <?= $is_locked ? 'mengaktifkan kembali' : 'menonaktifkan'; ?> semua fungsi manajemen kelompok manual/otomatis.');">
+                            onclick="return confirm('Ingin <?= $is_locked ? 'MEMBUKA KUNCI' : 'MENGUNCI'; ?> pemilihan kelompok?');">
                         <?= $is_locked ? 'Unlock Team' : 'Lock Team'; ?> 
                     </button>
                 </div>

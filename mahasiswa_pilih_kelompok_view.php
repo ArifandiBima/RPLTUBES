@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Mahasiswa: Pilih Kelompok - <?php echo $tugas_besar['namaMK'] ?? 'Tugas Besar'; ?></title> 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="kelompokstyle.css">
 </head>
 <body>
 
 <div class="header-top-nav">
     <div class="left-nav">
-        <a href="home.php" class="btn-nav back-btn">
+        <a <?php echo 'href="admin/admin.php?'.http_build_query($data).'"'?>class="btn-nav back-btn">
             <span class="arrow">←</span> Kembali
         </a>
     </div>
     <div class="right-nav">
-        <a href="home.php" class="btn-nav profile-btn">
+        <a href="matkul.php" class="btn-nav profile-btn">
             <?= htmlspecialchars($nama_mahasiswa ?? 'Mahasiswa'); ?>👤
         </a>
     </div>

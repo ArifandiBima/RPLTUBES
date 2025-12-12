@@ -2,85 +2,51 @@
 require "conn.php";
 session_start();
 
-/*
-    GET parameters from pilih_kelompok.php
-*/
-$namaTugasBesar = $_GET["namaTB"];
-$kodeMatkul     = $_GET["kodeMatkul"];
-$kelas          = $_GET["kelas"];
-$semester       = $_GET["semester"];
-$kelompok       = $_GET["kelompok"];
+// 1. Get data from URL (using ?? to avoid errors if keys are missing)
+$namaTugasBesar = $_GET["namaTugasBesar"] ?? "";
+$kodeMatkul     = $_GET["kodeMataKuliah"] ?? "";
+$kelas          = $_GET["kodeKelas"] ?? "";
+$semester       = (int)($_GET["semester"] ?? 0);
+$kelompok       = (int)($_GET["nomorKelompok"] ?? 0);
 
-/*
-    Query mahasiswa + nilai per komponen FROM THIS GROUP ONLY
-*/
+// 2. Simplified SQL: Joining mahasiswa directly to anggotaKelompok
 $sql = "
     SELECT m.npm, m.nama,
            n1.nilai AS komponen1,
            n2.nilai AS komponen2
-    FROM peserta p
-    JOIN mahasiswa m 
-         ON p.npmPeserta = m.npm
-    JOIN anggotaKelompok ag
-         ON ag.npmPeserta = m.npm
-        AND ag.namaTugasBesar = ?
-        AND ag.kodeMataKuliah = ?
-        AND ag.kodeKelas = ?
-        AND ag.semester = ?
-        AND ag.nomorKelompok = ?
-    LEFT JOIN nilai n1 ON 
-           n1.npmPeserta = m.npm 
-       AND n1.nomorKomponen = 1
-       AND n1.namaTugasBesar = ?
-       AND n1.kodeMataKuliah = ?
-       AND n1.kodeKelas = ?
-       AND n1.semester = ?
-    LEFT JOIN nilai n2 ON 
-           n2.npmPeserta = m.npm 
-       AND n2.nomorKomponen = 2
-       AND n2.namaTugasBesar = ?
-       AND n2.kodeMataKuliah = ?
-       AND n2.kodeKelas = ?
-       AND n2.semester = ?
-    WHERE p.kodeMataKuliah = ?
-      AND p.kodeKelas = ?
-      AND p.semester = ?
+    FROM anggotaKelompok ag
+    JOIN mahasiswa m ON ag.npmPeserta = m.npm
+    LEFT JOIN nilai n1 ON n1.npmPeserta = m.npm 
+        AND n1.nomorKomponen = 1
+        AND n1.namaTugasBesar = ag.namaTugasBesar
+        AND n1.kodeMataKuliah = ag.kodeMataKuliah
+        AND n1.kodeKelas      = ag.kodeKelas
+        AND n1.semester       = ag.semester
+    LEFT JOIN nilai n2 ON n2.npmPeserta = m.npm 
+        AND n2.nomorKomponen = 2
+        AND n2.namaTugasBesar = ag.namaTugasBesar
+        AND n2.kodeMataKuliah = ag.kodeMataKuliah
+        AND n2.kodeKelas      = ag.kodeKelas
+        AND n2.semester       = ag.semester
+    WHERE ag.namaTugasBesar = ?
+      AND ag.kodeMataKuliah = ?
+      AND ag.kodeKelas      = ?
+      AND ag.semester       = ?
+      AND ag.nomorKelompok  = ?
     ORDER BY m.npm
 ";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param(
-    "sssissssssssssss",
-    $namaTugasBesar, $kodeMatkul, $kelas, $semester, $kelompok,
-    $namaTugasBesar, $kodeMatkul, $kelas, $semester,
-    $namaTugasBesar, $kodeMatkul, $kelas, $semester,
-    $kodeMatkul, $kelas, $semester
-);
+
+// 3. CORRECTED bind_param: 
+// Matches variables defined at the top and uses 'i' for integers (semester, kelompok)
+$stmt->bind_param("sssii", $namaTugasBesar, $kodeMatkul, $kelas, $semester, $kelompok);
+
 $stmt->execute();
 $result = $stmt->get_result();
-
 $mahasiswa = $result->fetch_all(MYSQLI_ASSOC);
-
-/* FALLBACK DUMMY DATA IF QUERY RETURNS NOTHING
-   HAPUS KALO UDH KONEK SAMA DB */
-if (empty($mahasiswa)) {
-    $mahasiswa = [
-        [
-            "npm" => "2200000001",
-            "nama" => "Budi Santoso",
-            "komponen1" => 32,
-            "komponen2" => 32
-        ],
-        [
-            "npm" => "2200000002",
-            "nama" => "Siti Aminah",
-            "komponen1" => 45,
-            "komponen2" => 0    // you mentioned Komponen 2 was blank earlier
-        ]
-    ];
-}
-
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>

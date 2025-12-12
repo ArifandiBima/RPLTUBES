@@ -1,9 +1,9 @@
 <?php
 // 1. Koneksi Database
 require 'conn.php';
+session_start();
 
-// 2. Definisi Konteks (Simulasi Input Mahasiswa/URL Parameter)
-// ------------------------------------------
+// 2. input Mahasiswa/URL Parameter
 // **HARUS SESUAI DENGAN DATA DUMMY DI setup_db.php**
 // $kode_mk = 'IF101';           
 // $kode_kelas = 'A';            
@@ -11,13 +11,24 @@ require 'conn.php';
 // $nama_tb = 'Project Algoritma'; 
 // $npm_mahasiswa = '2200000002'; // <-- PERUBAHAN: Menggunakan NPM Siti Aminah
 
-$kode_mk = $_GET['kode_mk'] ?? '';
-$kode_kelas = $_GET['kode_kelas'] ?? '';
+$kode_mk = $_GET['kodeMataKuliah'] ?? '';
+$kode_kelas = $_GET['kodeKelas'] ?? '';
 // Khusus semester, pastikan di-cast ke integer
 $semester = isset($_GET['semester']) ? (int)$_GET['semester'] : 0;
-$nama_tb = $_GET['nama_tb'] ?? '';
-$npm_mahasiswa = $_GET['npm'] ?? '';
+$nama_tb = $_GET['namaTugasBesar'] ?? '';
+$npm_mahasiswa = $_SESSION['npm'] ?? '';
 
+$data = array(
+    // 'namaMataKuliah' => 'Algoritma',
+    // 'kodeMataKuliah' => 'IF101',
+    // 'kodeKelas'   => 'A',
+    // 'semester'       => 1,
+    // 'namaTugasBesar' => "Project Algoritma"
+    'kodeMataKuliah' => $kode_mk,
+    'kodeKelas'  => $kode_kelas,
+    'semester'  => $semester,
+    'namaTugasBesar' => $nama_tb
+);
 // Inisialisasi variabel
 $tugas_besar = [];
 $data_kelompok = [];
@@ -26,15 +37,12 @@ $message = '';
 $notification_class = ''; 
 $nama_mahasiswa = 'Mahasiswa'; 
 
-// Fungsi utilitas untuk label kelompok (1=A, 2=B, ...)
+// Fungsi untuk label kelompok (1=A, 2=B, ...)
 $kelompok_label = function($nomor) {
     return chr(64 + $nomor);
 };
 
-
-// ------------------------------------------
 // 3. Ambil Data Mahasiswa (Nama Mahasiswa yang sedang login)
-// ------------------------------------------
 $sql_select_mhs = "SELECT nama FROM mahasiswa WHERE npm = ?";
 $stmt_mhs = $conn->prepare($sql_select_mhs);
 if ($stmt_mhs) {
@@ -47,10 +55,7 @@ if ($stmt_mhs) {
     $stmt_mhs->close();
 }
 
-
-// ------------------------------------------
 // 4. Ambil Data Tugas Besar
-// ------------------------------------------
 $sql_select_tb = "
     SELECT 
         tb.namaTugasBesar AS nama,
@@ -74,7 +79,6 @@ if ($stmt_tb === false) {
     die("Error preparing statement (TB): " . $conn->error);
 }
 
-// Urutan tipe data: namaTugasBesar(s), kodeMataKuliah(s), kodeKelas(s), semester(i)
 $stmt_tb->bind_param("sssi", $nama_tb, $kode_mk, $kode_kelas, $semester);
 $stmt_tb->execute();
 $result_tb = $stmt_tb->get_result();
@@ -85,8 +89,6 @@ if ($result_tb->num_rows > 0) {
 $stmt_tb->close();
 
 if (empty($tugas_besar)) {
-    // Jika Tugas Besar tidak ditemukan, hentikan query data kelompok.
-    // View akan menampilkan "Data Tugas Besar Tidak Ditemukan"
 } else {
     // 5. Cek Kelompok Mahasiswa Saat Ini
     $sql_cek_kelompok = "
@@ -127,7 +129,6 @@ if (empty($tugas_besar)) {
     $stmt_k->execute();
     $result_k = $stmt_k->get_result();
 
-    // Re-struktur data kelompok
     while ($row = $result_k->fetch_assoc()) {
         $nomor = $row['nomorKelompok'];
         
@@ -164,7 +165,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['
         } elseif ($is_locked) {
             $message = "Gagal: Pemilihan kelompok sedang dikunci oleh dosen.";
         } else {
-            // Proses gabung atau pindah kelompok
+            // Proses gabung dan pindah kelompok
             $conn->begin_transaction();
             try {
                 // 1. Hapus dari kelompok lama (jika ada)
@@ -182,7 +183,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['
                     INSERT INTO anggotaKelompok (namaTugasBesar, kodeMataKuliah, kodeKelas, semester, nomorKelompok, npmPeserta) 
                     VALUES (?, ?, ?, ?, ?, ?)";
                 $stmt_insert = $conn->prepare($sql_insert);
-                // Urutan: namaTugasBesar(s), kodeMataKuliah(s), kodeKelas(s), semester(i), nomorKelompok(i), npmPeserta(s)
                 $stmt_insert->bind_param("sssiis", $nama_tb, $kode_mk, $kode_kelas, $semester, $target_kelompok, $npm_mahasiswa);
                 $stmt_insert->execute();
                 $stmt_insert->close();
@@ -192,7 +192,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['
                 $message = "success:Anda telah berhasil $message_text ke Kelompok " . $kelompok_label($target_kelompok) . ".";
                 
                 // Setelah sukses, reload untuk update tampilan
-                header("Location: " . $_SERVER['PHP_SELF'] . "?msg=" . urlencode($message));
+                header("Location: " . $_SERVER['PHP_SELF'] . "?" . http_build_query($data)); 
                 exit;
 
             } catch (mysqli_sql_exception $exception) {
@@ -209,10 +209,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['
 // Tutup koneksi sebelum menampilkan view
 $conn->close();
 
-
-// ************************************************
-// LOGIKA UNTUK MENGAMBIL PESAN DARI URL
-// ************************************************
+// MENGAMBIL PESAN DARI URL
 $message = $message ?? ''; 
 if (isset($_GET['msg'])) {
     $get_message = htmlspecialchars(urldecode($_GET['msg']));
@@ -230,8 +227,8 @@ if (isset($_GET['msg'])) {
             $notification_class = 'error';
         }
     } else {
-        $message = $get_message; // Jika tidak ada prefix
-        $notification_class = 'info'; // Default
+        $message = $get_message; 
+        $notification_class = 'info'; 
     }
 }
 require 'mahasiswa_pilih_kelompok_view.php';

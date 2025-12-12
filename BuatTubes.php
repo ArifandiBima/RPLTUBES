@@ -12,10 +12,10 @@
 <div class="topBar">
     <div class="backBtn">←</div>
 
-    <div class="titleBox">
+    <div class="titleBox"> 
         <?php 
         echo $_GET["namaMataKuliah"]??"matkul boongan".'<br>';
-        echo $_GET["kodeMataKuliah"]??"aiforthewin";
+        echo $_GET["kodeMataKuliah"]??"AIForTheWin";
         ?>
     </div>
 
@@ -24,13 +24,13 @@
 
 <form class="formContainer" method="POST" action="mintaKomponen.php">
 
-    <input type="hidden" name="kodeMatkul" value="<?= $_GET['kodeMataKuliah'] ?>">
-    <input type="hidden" name="namaMatkul" value="<?= $_GET['namaMataKuliah'] ?>">
-    <input type="hidden" name="kelas" value="<?= $_GET['kelas'] ?? 'A' ?>">
-    <input type="hidden" name="semester" value="<?= $_GET['semester'] ?? 1 ?>">
+    <input type="hidden" name="kodeMataKuliah" value="<?= $_GET['kodeMataKuliah'] ?>">
+    <input type="hidden" name="namaMataKuliah" value="<?= $_GET['namaMataKuliah'] ?>">
+    <input type="hidden" name="kodeKelas" value="<?= $_GET['kelas']?>">
+    <input type="hidden" name="semester" value="<?= $_GET['semester']?>">
 
     <label>Nama Tugas Besar:</label>
-    <input type="text" name="namaTB" required>
+    <input type="text" name="namaTugasBesar" required>
 
     <label>Banyak Komponen Penilaian:</label>
     <input type="number" class="smallInput" name="banyakKomponen" required>
