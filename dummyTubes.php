@@ -2,7 +2,7 @@
 session_destroy();
 session_start();
 $_SESSION["nik"] = "1980010123456789";
-$_SESSION["tipePengguna"]="dosen";
+$_SESSION["tipePengguna"]="2";
 $_SESSION["nama"]="Budi Santoso";
 $data = array(
     'namaMataKuliah' => 'Algoritma',

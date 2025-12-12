@@ -15,7 +15,7 @@
     <div class="titleBox"> 
         <?php 
         echo $_GET["namaMataKuliah"]??"matkul boongan".'<br>';
-        echo $_GET["kodeMataKuliah"]??"aiforthewin";
+        echo $_GET["kodeMataKuliah"]??"AIForTheWin";
         ?>
     </div>
 
