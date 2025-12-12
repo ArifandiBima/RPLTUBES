@@ -18,6 +18,16 @@ foreach ($_POST as $key => $value) {
         $banyak++;
     }
 }
+$sql = "INSERT INTO tugasBesar 
+            (namaTugasBesar, kodeMataKuliah, kodeKelas, semester, banyakAnggotaKelompok)
+            VALUES (?, ?, ?, ?, ?)";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param(
+        "sssii",
+        $namaTB, $kodeMatkul, $kelas, $semester, $_POST["banyakAnggota"]
+    );
+    $stmt->execute();
 
 for ($i = 1; $i <= $banyak; $i++) {
     $nama = $_POST["komponen_nama_$i"];
@@ -27,17 +37,17 @@ for ($i = 1; $i <= $banyak; $i++) {
     $sql = "INSERT INTO komponenPenilaian 
             (namaTugasBesar, kodeMataKuliah, kodeKelas, semester, nomorKomponen, 
              namaKomponen, bobot, tanggalPenilaian, isHidden)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param(
         "sssissds",
         $namaTB, $kodeMatkul, $kelas, $semester,
-        $i, $nama, $bobot, $deadline, 0
+        $i, $nama, $bobot, $deadline
     );
     $stmt->execute();
 }
 
-header("Location: nilai_dosen.php?".http_build_query($data));
+header("Location: dosen_edit_kelompok_controller.php?".http_build_query($data));
 exit;
 ?>

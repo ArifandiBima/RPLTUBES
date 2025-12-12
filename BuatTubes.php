@@ -24,15 +24,9 @@
 
 <form class="formContainer" method="POST" action="mintaKomponen.php">
 
-<<<<<<< Updated upstream
-    <input type="hidden" name="kodeMatkul" value="<?= $_GET['kodeMataKuliah'] ?>">
-    <input type="hidden" name="namaMatkul" value="<?= $_GET['namaMataKuliah'] ?>">
-    <input type="hidden" name="kelas" value="<?= $_GET['kelas']?>">
-=======
     <input type="hidden" name="kodeMataKuliah" value="<?= $_GET['kodeMataKuliah'] ?>">
     <input type="hidden" name="namaMataKuliah" value="<?= $_GET['namaMataKuliah'] ?>">
     <input type="hidden" name="kodeKelas" value="<?= $_GET['kelas']?>">
->>>>>>> Stashed changes
     <input type="hidden" name="semester" value="<?= $_GET['semester']?>">
 
     <label>Nama Tugas Besar:</label>

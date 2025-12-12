@@ -24,6 +24,7 @@
     <input type="hidden" name="kodeKelas" value="<?php echo $_POST["kodeKelas"]?>" >
     <input type="hidden" name="semester" value="<?php echo $_POST["semester"]?>" >
     <input type="hidden" name="auto" value="<?php echo $_POST["auto"]??0?>" >
+    <input type="hidden" name="banyakAnggota" value="<?php echo $_POST["banyakAnggota"]??0?>" >
     <?php 
     $banyak = $_POST["banyakKomponen"] ?? 2;
 
