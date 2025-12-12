@@ -12,22 +12,51 @@ $kodeMatkul = $_POST["kodeMataKuliah"];
 $kelas      = $_POST["kodeKelas"];
 $semester   = $_POST["semester"];
 
+$sql = "INSERT INTO tugasBesar 
+            (namaTugasBesar, kodeMataKuliah, kodeKelas, semester, banyakAnggotaKelompok)
+            VALUES (?, ?, ?, ?, ?)";
+
+$stmt = $conn->prepare($sql);
+$stmt->bind_param(
+    "sssii",
+    $namaTB, $kodeMatkul, $kelas, $semester, $_POST["banyakAnggota"]
+);
+$stmt->execute();
+
+$sql = "SELECT count(npmPeserta) as cnt
+        from peserta
+        where kodeMataKuliah = ? and semester = ? and kodeKelas=?"
+        ;
+        
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param(
+            "sis",
+            $kodeMatkul,$semester, $kelas
+        );
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $banyakPeserta = (int)($row["cnt"]);
+        $banyakPeserta = ($banyakPeserta+$_POST["banyakAnggota"]-1)/$_POST["banyakAnggota"];
+for ($i=1;$i<=$banyakPeserta;$i++){
+    $sql = "INSERT INTO kelompok 
+    (namaTugasBesar, kodeMataKuliah, kodeKelas, semester, nomorKelompok)
+    VALUES (?, ?, ?, ?, ?)";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param(
+        "sssii",
+        $namaTB, $kodeMatkul, $kelas, $semester, $i
+    );
+    $stmt->execute();
+}
+
 $banyak = 0;
 foreach ($_POST as $key => $value) {
     if (strpos($key, "komponen_nama_") === 0) {
         $banyak++;
     }
 }
-$sql = "INSERT INTO tugasBesar 
-            (namaTugasBesar, kodeMataKuliah, kodeKelas, semester, banyakAnggotaKelompok)
-            VALUES (?, ?, ?, ?, ?)";
-
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param(
-        "sssii",
-        $namaTB, $kodeMatkul, $kelas, $semester, $_POST["banyakAnggota"]
-    );
-    $stmt->execute();
 
 for ($i = 1; $i <= $banyak; $i++) {
     $nama = $_POST["komponen_nama_$i"];

@@ -2,14 +2,10 @@
 session_start();
 include '../config/conn.php'; 
 
-// 1. CEK LOGIN
-if(!isset($_SESSION['status']) || $_SESSION['status'] != "login"){
-    header("Location: ../login.html");
-    exit();
-}
-
-$role = $_SESSION['role'];
+$role = $_SESSION['tipePengguna'];
 $username = $_SESSION['username']; // NIK Dosen ATAU NPM Mahasiswa
+if ($role ==2) $username = $_SESSION["nik"];
+if ($role ==3) $username = $_SESSION["npm"];
 
 // 2. AMBIL NAMA LENGKAP BERDASARKAN ROLE
 $nama_lengkap = $username; // Default
@@ -42,7 +38,7 @@ if ($role == 2) {
 <body>
 
     <?php if ($role == 1): ?>
-        <div id="btnBack"><a href="login.html" style="text-decoration:none;">⮌</a></div>
+        <div id="btnBack"><a href="../index.php" style="text-decoration:none;">⮌</a></div>
         <div id="container">    
             <div><button id="expExcel"><a href="convert.php">Export excel</a></button></div>
             <div id="subBtn">
@@ -64,7 +60,7 @@ if ($role == 2) {
         if(empty($pilih_tubes) || empty($pilih_mk)) {
             echo "<script>
                     alert('Silakan pilih Tugas Besar terlebih dahulu!');
-                    window.location.href = 'tubesSelect.php';
+                    window.location.href = '../matkul.php';
                   </script>";
             exit();
         }
@@ -81,7 +77,7 @@ if ($role == 2) {
                     Aktif di: <b><?= $pilih_tubes ?></b>
                 </p>
             </div>
-            <a href="logout.php" class="btn-logout">Logout</a>
+            <a href="../index.php" class="btn-logout">Logout</a>
         </div>
 
         <div class="container">
@@ -147,17 +143,17 @@ if ($role == 2) {
                         
                         <?php if ($role == 2): ?>
                             
-                            <a href="dosen_edit_kelompok_controller.php?<?= $params ?>" class="btn-action btn-kelompok">Edit Kelompok</a>
-                            <a href="rubrik.php?<?= $params ?>" class="btn-action btn-rubrik">Edit Rubrik</a>
-                            <a href="nilai_dosen.php?<?= $params ?>" class="btn-action btn-nilai">Edit Nilai</a>
+                            <a href="../dosen_edit_kelompok_controller.php?<?= $params ?>" class="btn-action btn-kelompok">Edit Kelompok</a>
+                            <a href="../rubrik.php?<?= $params ?>" class="btn-action btn-rubrik">Edit Rubrik</a>
+                            <a href="../nilai_dosen.php?<?= $params ?>" class="btn-action btn-nilai">Edit Nilai</a>
 
                         <?php elseif ($role == 3): ?>
 
-                            <a href="mahasiswa_pilih_kelompok_controller.php?<?= $params ?>" class="btn-action btn-kelompok">
+                            <a href="../mahasiswa_pilih_kelompok_controller.php?<?= $params ?>" class="btn-action btn-kelompok">
                                 Lihat Kelompok
                             </a>
 
-                            <a href="nilai_mahasiswa.php?<?= $params ?>" class="btn-action btn-nilai">
+                            <a href="../nilai_mahasiswa.php?<?= $params ?>" class="btn-action btn-nilai">
                                 Lihat Nilai
                             </a>
 
@@ -167,7 +163,7 @@ if ($role == 2) {
 
                 </div>
                 <div style="margin-top: 20px; text-align: center;">
-                    <a href="tubesSelect.php?kodeMataKuliah=<?= $pilih_mk ?>&kodeKelas=<?= $pilih_kls ?>&semester=<?= $pilih_sem ?>&namaMataKuliah=<?= urlencode($row['namaMataKuliah']) ?>" 
+                    <a href="../tubesSelect.php?kodeMataKuliah=<?= $pilih_mk ?>&kodeKelas=<?= $pilih_kls ?>&semester=<?= $pilih_sem ?>&namaMataKuliah=<?= urlencode($row['namaMataKuliah']) ?>" 
                        style="color: #666; text-decoration: none; font-weight: bold;">
                        ⮌
                     </a>
