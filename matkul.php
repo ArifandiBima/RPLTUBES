@@ -19,7 +19,8 @@ $nextTarget = "TubesSelect.php";
 <body>
 
 <div class="header">
-    <div class="back-btn">⮌</div>
+
+    <a href=<?php if ($_SESSION["tipePengguna"]==1) echo "admin/admin.php"; else echo "index.php"?>class="back-btn">⮌</a>
 
     <div class="profile-card">
         <div class="profile-icon"></div>

@@ -9,7 +9,7 @@
 
 <div class="header-top-nav">
     <div class="left-nav">
-        <a href="admin.php" class="btn-nav back-btn">
+        <a <?php echo 'href="admin/admin.php?'.http_build_query($data).'"'?>class="btn-nav back-btn">
             <span class="arrow">←</span> Kembali
         </a>
     </div>
