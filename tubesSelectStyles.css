@@ -1,0 +1,88 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #dcdcdc;
+    padding: 10px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+.back-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #2a7a38;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.profile-card {
+    background: white;
+    padding: 20px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    width: 1000px;
+}
+
+.profile-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #2a7a38;
+    margin-right: 20px;
+}
+
+.profile-text {
+    font-size: 14px;
+    line-height: 18px;
+}
+
+.container {
+    padding: 20px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.card {
+    background: white;
+    height: 140px;
+    border-radius: 10px;
+    padding: 15px;  
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+.tubes-button {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 8px;
+    background-color: #5fa86b;     /* soft green */
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;          /* keep it clean if it's <a> */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.tubes-button:hover {
+    background-color: #4e965b;      /* slightly darker */
+    transform: translateY(-2px);    /* subtle lift */
+}
+
+.tubes-button:active {
+    background-color: #3f7f4c;
+    transform: translateY(0);
+}
