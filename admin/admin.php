@@ -43,7 +43,7 @@ if ($role == 2) {
             <div><button id="expExcel"><a href="convert.php">Export excel</a></button></div>
             <div id="subBtn">
                 <div id="btnUser"><button><a href="kelola_user.php">Kelola Pengguna</a></button></div>
-                <div id="btnSemester"><button><a href="kelola_semester.php">Kelola Semester</a></button></div>
+                <div id="btnSemester"><button><a href="../matkul.php">Kelola Semester</a></button></div>
             </div>
         </div>
 

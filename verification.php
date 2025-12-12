@@ -19,7 +19,7 @@ if ($result->num_rows === 1) {
     $_SESSION['username']  = $user['username'];
     $_SESSION['tipePengguna'] = $user['tipePengguna'];
     $_SESSION['login_time'] = date('Y-m-d H:i:s');
-
+    $_SESSION['nama'] = $user['username'];
     if ($user['tipePengguna'] == 1) {
         header("Location: admin/admin.php");
     } else {
