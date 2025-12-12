@@ -1,9 +1,15 @@
 <?php
 require "conn.php";
-
-$namaTB     = $_POST["namaTB"];
-$kodeMatkul = $_POST["kodeMatkul"];
-$kelas      = $_POST["kelas"];
+$data=array(
+    'namaTugasBesar' => $_POST["namaTugasBesar"],
+    'kodeMataKuliah' => $_POST["kodeMataKuliah"],
+    'kodeKelas' =>$_POST["kodeKelas"],
+    'semester' =>$_POST["semester"],
+    'auto'=>$_POST["auto"]
+);
+$namaTB     = $_POST["namaTugasBesar"];
+$kodeMatkul = $_POST["kodeMataKuliah"];
+$kelas      = $_POST["kodeKelas"];
 $semester   = $_POST["semester"];
 
 $banyak = 0;
@@ -21,17 +27,17 @@ for ($i = 1; $i <= $banyak; $i++) {
     $sql = "INSERT INTO komponenPenilaian 
             (namaTugasBesar, kodeMataKuliah, kodeKelas, semester, nomorKomponen, 
              namaKomponen, bobot, tanggalPenilaian, isHidden)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0)";
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param(
         "sssissds",
         $namaTB, $kodeMatkul, $kelas, $semester,
-        $i, $nama, $bobot, $deadline
+        $i, $nama, $bobot, $deadline, 0
     );
     $stmt->execute();
 }
 
-header("Location: nilai_dosen.php");
+header("Location: nilai_dosen.php?".http_build_query($data));
 exit;
 ?>

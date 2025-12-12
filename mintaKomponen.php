@@ -14,11 +14,16 @@
 <div class="header">
     <div class="back-btn">←</div>
     <div class="title">
-        Matkul90<br>
-        AIF123123
+        <?php echo $_POST["namaMataKuliah"]?><br>
+        <?php echo $_POST["kodeMataKuliah"]?>
     </div>
 </div>
 <form action="processKomponen.php" method="post">
+    <input type="hidden" name="namaTugasBesar" value="<?php echo $_POST["namaTugasBesar"]?>" >
+    <input type="hidden" name="kodeMataKuliah" value="<?php echo $_POST["kodeMataKuliah"]?>" >
+    <input type="hidden" name="kodeKelas" value="<?php echo $_POST["kodeKelas"]?>" >
+    <input type="hidden" name="semester" value="<?php echo $_POST["semester"]?>" >
+    <input type="hidden" name="auto" value="<?php echo $_POST["auto"]??0?>" >
     <?php 
     $banyak = $_POST["banyakKomponen"] ?? 2;
 
