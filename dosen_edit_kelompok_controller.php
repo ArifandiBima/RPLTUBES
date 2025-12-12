@@ -20,11 +20,15 @@ $semester = isset($_GET['semester']) ? (int)$_GET['semester'] : 0;
 $nama_tb = $_GET['namaTugasBesar'] ?? ''; 
 $nik_dosen = $_SESSION['nik'] ?? ''; // NIK Dosen yang sedang login, diambil dari URL
 $data = array(
-    'namaMataKuliah' => 'Algoritma',
-    'kodeMataKuliah' => 'IF101',
-    'kodeKelas'   => 'A',
-    'semester'       => 1,
-    'namaTugasBesar' => "Project Algoritma"
+    // 'namaMataKuliah' => 'Algoritma',
+    // 'kodeMataKuliah' => 'IF101',
+    // 'kodeKelas'   => 'A',
+    // 'semester'       => 1,
+    // 'namaTugasBesar' => "Project Algoritma"
+     'kodeMataKuliah' => $kode_mk,
+     'kodeKelas'   => $kode_kelas,
+     'semester'       => $semester,
+     'namaTugasBesar' => $nama_tb
 );
 // Inisialisasi variabel untuk menghindari error
 $tugas_besar = [];

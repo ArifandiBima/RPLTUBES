@@ -19,12 +19,15 @@ $nama_tb = $_GET['namaTugasBesar'] ?? '';
 $npm_mahasiswa = $_SESSION['npm'] ?? '';
 
 $data = array(
-    'namaMataKuliah' => 'Algoritma',
-    'kodeMataKuliah' => 'IF101',
-    'kodeKelas'   => 'A',
-    'semester'       => 1,
-    'namaTugasBesar' => "Project Algoritma"
-
+    // 'namaMataKuliah' => 'Algoritma',
+    // 'kodeMataKuliah' => 'IF101',
+    // 'kodeKelas'   => 'A',
+    // 'semester'       => 1,
+    // 'namaTugasBesar' => "Project Algoritma"
+    'kodeMataKuliah' => $kode_mk,
+    'kodeKelas'  => $kode_kelas,
+    'semester'  => $semester,
+    'namaTugasBesar' => $nama_tb
 );
 // Inisialisasi variabel
 $tugas_besar = [];
