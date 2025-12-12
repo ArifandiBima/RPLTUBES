@@ -4,7 +4,7 @@ if ($_SESSION["tipePengguna"]==2){
     $id = $_SESSION["nik"];
 }
 else{
-    $id = $_SESSION["npm"];
+    $id = $_SESSION["npm"]??0;
 }
 $nextTarget = "TubesSelect.php";
 ?>
@@ -79,51 +79,39 @@ $nextTarget = "TubesSelect.php";
     <?php
     if ($_SESSION["tipePengguna"]==3){
         $queryMatkul = "
-            SELECT kodeMataKuliah, namaMataKuliah
-            FROM MataKuliah
-            WHERE kodeMataKuliah in (
-                SELECT kodeMataKuliah
-                FROM peserta
-                WHERE npmPeserta = ?  and semester = ?
-            
-            );
+            SELECT mataKuliah.kodeMataKuliah, namaMataKuliah, kodeKelas
+            FROM mataKuliah
+            INNER JOIN peserta ON mataKuliah.kodeMataKuliah=peserta.kodeMataKuliah
+            WHERE npmPeserta = ?  and semester = ?;
         ";
             
     }
     else if ($_SESSION["tipePengguna"]==2)
         $queryMatkul = "
-            SELECT kodeMataKuliah, namaMataKuliah
-            FROM MataKuliah
-            WHERE kodeMataKuliah in (
-                SELECT kodeMataKuliah
-                FROM pengampu
-                WHERE nikPengampu = ?  and semester = ?
-            
-            );
+            SELECT mataKuliah.kodeMataKuliah, namaMataKuliah, kodeKelas
+            FROM mataKuliah
+            INNER JOIN pengampu ON mataKuliah.kodeMataKuliah=pengampu.kodeMataKuliah
+            WHERE nikPengampu = ?  and semester = ?;
         ";
     else{
         $queryMatkul = "
-            SELECT kodeMataKuliah, namaMataKuliah
-            FROM MataKuliah
-            WHERE kodeMataKuliah in (
-                SELECT kodeMataKuliah
-                FROM peserta
-                WHERE ((npmPeserta = ?) OR True)  and semester = ?
-            
-            );
+            SELECT mataKuliah.kodeMataKuliah, namaMataKuliah, kodeKelas
+            FROM mataKuliah
+            INNER JOIN pengampu ON mataKuliah.kodeMataKuliah=pengampu.kodeMataKuliah
+            WHERE ((semester = ?) OR True)  and semester = ?;
         ";
     }
     $stmt = $conn->prepare($queryMatkul);
     $stmt->bind_param("si", $id, $semester);
     $stmt->execute();
     $result = $stmt->get_result();
-    $data = array(
-        'namaMataKuliah' => 'Algoritma',
-        'kodeMataKuliah' => 'IF101',
-        'kodeKelas'   => 'A',
-        'semester'       => 1
-    );
     while ($row = $result->fetch_assoc()) {
+        $data = array(
+            'namaMataKuliah' => $row['namaMataKuliah'],
+            'kodeMataKuliah' => $row['kodeMataKuliah'],
+            'kodeKelas'   => $row['kodeKelas'],
+            'semester'       => $semester
+        );
         echo '<a href = "'.$nextTarget.'?'.http_build_query($data).'"><div class="card">'.
         $row["kodeMataKuliah"].'<br>'.
         $row["namaMataKuliah"].'</div></a>';

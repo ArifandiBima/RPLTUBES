@@ -11,7 +11,10 @@ $namaTB     = $_POST["namaTugasBesar"];
 $kodeMatkul = $_POST["kodeMataKuliah"];
 $kelas      = $_POST["kodeKelas"];
 $semester   = $_POST["semester"];
-
+echo $namaTB;
+echo $kodeMatkul;
+echo $kelas;
+echo $semester;
 $sql = "INSERT INTO tugasBesar 
             (namaTugasBesar, kodeMataKuliah, kodeKelas, semester, banyakAnggotaKelompok)
             VALUES (?, ?, ?, ?, ?)";
