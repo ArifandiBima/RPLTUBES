@@ -2,14 +2,29 @@
 session_start();
 include '../config/conn.php'; 
 
-$role = $_SESSION['role'];
-$username = $_SESSION['username']; // NIK Dosen
+// 1. CEK LOGIN
+if(!isset($_SESSION['status']) || $_SESSION['status'] != "login"){
+    header("Location: ../login.html");
+    exit();
+}
 
-// Ambil Nama Lengkap Dosen
-$nama_lengkap = $username;
+$role = $_SESSION['role'];
+$username = $_SESSION['username']; // NIK Dosen ATAU NPM Mahasiswa
+
+// 2. AMBIL NAMA LENGKAP BERDASARKAN ROLE
+$nama_lengkap = $username; // Default
+
 if ($role == 2) {
+    // Jika Dosen, ambil dari tabel dosen
     $q = mysqli_query($conn, "SELECT nama FROM dosen WHERE nik = '$username'");
     if ($row = mysqli_fetch_assoc($q)) $nama_lengkap = $row['nama'];
+    $label_id = "NIK";
+
+} elseif ($role == 3) {
+    // Jika Mahasiswa, ambil dari tabel mahasiswa
+    $q = mysqli_query($conn, "SELECT nama FROM mahasiswa WHERE npm = '$username'");
+    if ($row = mysqli_fetch_assoc($q)) $nama_lengkap = $row['nama'];
+    $label_id = "NPM";
 }
 ?>
 
@@ -36,21 +51,20 @@ if ($role == 2) {
             </div>
         </div>
 
- <?php elseif ($role == 2): ?>
+    <?php elseif ($role == 2 || $role == 3): ?>
         
         <?php
-        // 1. AMBIL DATA DARI URL (SESSION PILIHAN SAAT INI)
-        // Kita butuh data ini untuk memfilter database
+        // A. AMBIL DATA DARI URL
         $pilih_tubes = $_GET['namaTugasBesar'] ?? '';
         $pilih_mk    = $_GET['kodeMataKuliah'] ?? '';
         $pilih_kls   = $_GET['kodeKelas'] ?? '';
         $pilih_sem   = $_GET['semester'] ?? '';
 
-        // Validasi Sederhana: Jika tidak ada data di URL, suruh pilih dulu
+        // Validasi: Jika URL kosong, lempar ke tubesSelect
         if(empty($pilih_tubes) || empty($pilih_mk)) {
             echo "<script>
                     alert('Silakan pilih Tugas Besar terlebih dahulu!');
-                    window.location.href = 'tubesSelect.php'; // Atau halaman daftar kelas
+                    window.location.href = 'tubesSelect.php';
                   </script>";
             exit();
         }
@@ -62,7 +76,10 @@ if ($role == 2) {
             </div>
             <div class="profile-text">
                 <h3>Halo, <?= $nama_lengkap; ?></h3>
-                <p>Sedang Mengelola: <b><?= $pilih_tubes ?></b></p>
+                <p><?= $label_id ?>: <?= $username; ?></p>
+                <p style="font-size: 12px; margin-top:5px; color:#2a7a38;">
+                    Aktif di: <b><?= $pilih_tubes ?></b>
+                </p>
             </div>
             <a href="logout.php" class="btn-logout">Logout</a>
         </div>
@@ -70,33 +87,43 @@ if ($role == 2) {
         <div class="container">
             
             <?php
-            // 2. QUERY SPESIFIK (HANYA 1 DATA)
-            // Perhatikan bagian WHERE yang saya tambahkan filter AND
-            $sql = "SELECT 
-                        tb.namaTugasBesar, 
-                        tb.kodeMataKuliah, 
-                        mk.namaMataKuliah, 
-                        tb.kodeKelas, 
-                        tb.semester
-                    FROM tugasBesar tb
-                    JOIN mataKuliah mk ON tb.kodeMataKuliah = mk.kodeMataKuliah
-                    JOIN pengampu p ON tb.kodeMataKuliah = p.kodeMataKuliah 
-                                   AND tb.kodeKelas = p.kodeKelas 
-                                   AND tb.semester = p.semester
-                    WHERE p.nikPengampu = '$username'
-                    AND tb.namaTugasBesar = '$pilih_tubes' 
-                    AND tb.kodeMataKuliah = '$pilih_mk'
-                    AND tb.kodeKelas = '$pilih_kls'
-                    AND tb.semester = '$pilih_sem'";
+            // B. LOGIKA QUERY SQL BERDASARKAN ROLE
+            // Kita harus membedakan JOIN-nya agar data valid
+            
+            if ($role == 2) {
+                // QUERY DOSEN: Cek tabel 'pengampu'
+                $sql = "SELECT tb.*, mk.namaMataKuliah 
+                        FROM tugasBesar tb
+                        JOIN mataKuliah mk ON tb.kodeMataKuliah = mk.kodeMataKuliah
+                        JOIN pengampu p ON tb.kodeMataKuliah = p.kodeMataKuliah 
+                                       AND tb.kodeKelas = p.kodeKelas 
+                                       AND tb.semester = p.semester
+                        WHERE p.nikPengampu = '$username' ";
+            } else {
+                // QUERY MAHASISWA: Cek tabel 'peserta'
+                $sql = "SELECT tb.*, mk.namaMataKuliah 
+                        FROM tugasBesar tb
+                        JOIN mataKuliah mk ON tb.kodeMataKuliah = mk.kodeMataKuliah
+                        JOIN peserta p ON tb.kodeMataKuliah = p.kodeMataKuliah 
+                                      AND tb.kodeKelas = p.kodeKelas 
+                                      AND tb.semester = p.semester
+                        WHERE p.npmPeserta = '$username' ";
+            }
+
+            // Lanjutan Filter (Sama untuk keduanya)
+            $sql .= "AND tb.namaTugasBesar = '$pilih_tubes' 
+                     AND tb.kodeMataKuliah = '$pilih_mk'
+                     AND tb.kodeKelas = '$pilih_kls'
+                     AND tb.semester = '$pilih_sem'";
             
             $result = mysqli_query($conn, $sql);
             
-            // Cek apakah data ditemukan
+            // Cek Data
             if (mysqli_num_rows($result) > 0) {
-                // Ambil datanya (pasti cuma 1 baris)
+                
                 $row = mysqli_fetch_assoc($result);
                 
-                // Siapkan Parameter untuk tombol-tombol di bawah
+            
                 $params = http_build_query([
                     'kodeMataKuliah' => $row['kodeMataKuliah'],
                     'kodeKelas'      => $row['kodeKelas'],
@@ -108,7 +135,7 @@ if ($role == 2) {
                     
                     <div class="card-header">
                         <span class="matkul-name"><?= $row['namaMataKuliah'] ?></span>
-                        <!-- <span class="matkul-code"><?= $row['kodeMataKuliah'] ?></span> -->
+                        <span class="matkul-code"><?= $row['kodeMataKuliah'] ?></span>
                     </div>
 
                     <div class="card-body">
@@ -117,9 +144,25 @@ if ($role == 2) {
                     </div>
 
                     <div class="card-actions">
-                        <a href="kelola_user.php?<?= $params ?>" class="btn-action btn-kelompok">Edit Kelompok</a>
-                        <a href="rubrik.php?<?= $params ?>" class="btn-action btn-rubrik">Edit Rubrik</a>
-                        <a href="nilai_dosen.php?<?= $params ?>" class="btn-action btn-nilai">Edit Nilai</a>
+                        
+                        <?php if ($role == 2): ?>
+                            
+                            <a href="kelola_user.php?<?= $params ?>" class="btn-action btn-kelompok">Edit Kelompok</a>
+                            <a href="rubrik.php?<?= $params ?>" class="btn-action btn-rubrik">Edit Rubrik</a>
+                            <a href="nilai_dosen.php?<?= $params ?>" class="btn-action btn-nilai">Edit Nilai</a>
+
+                        <?php elseif ($role == 3): ?>
+
+                            <a href="pilih_kelompok.php?<?= $params ?>" class="btn-action btn-kelompok">
+                                Lihat Kelompok
+                            </a>
+
+                            <a href="lihat_nilai.php?<?= $params ?>" class="btn-action btn-nilai">
+                                Lihat Nilai
+                            </a>
+
+                        <?php endif; ?>
+
                     </div>
 
                 </div>
@@ -132,7 +175,7 @@ if ($role == 2) {
 
             <?php
             } else {
-                echo '<p style="text-align:center; color:red;">Data Tugas Besar tidak ditemukan atau Anda tidak memiliki akses.</p>';
+                echo '<p style="text-align:center; color:red;">Data tidak ditemukan atau Anda tidak terdaftar di kelas ini.</p>';
             }
             ?>
         </div>
