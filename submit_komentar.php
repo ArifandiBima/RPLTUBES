@@ -16,10 +16,11 @@ $kelompok       = (int)($_POST["kelompok"] ?? 0);
 
 // --- 2. Database Logic: UPDATE / INSERT into the 'komentar' table ---
 // Check if a comment already exists for this specific combination
-$sql_check = "SELECT 1 FROM komentar
+$sql_check = "SELECT 1 FROM nilai
               WHERE npmPeserta = ? AND nomorKomponen = ? 
                 AND namaTugasBesar = ? AND kodeMataKuliah = ? 
                 AND kodeKelas = ? AND semester = ?";
+
 $check = $conn->prepare($sql_check);
 $check->bind_param("sisssi", $npm, $komponen, $namaTugasBesar, $kodeMatkul, $kelas, $semester);
 $check->execute();
@@ -28,8 +29,8 @@ $check->close();
 
 if ($exists) {
     // UPDATE existing comment
-    $sql_stmt = "UPDATE komentar 
-                 SET komentar = ?, tanggalKomentar = NOW()
+    $sql_stmt = "UPDATE nilai 
+                 SET komentar = ?   
                  WHERE npmPeserta = ? AND nomorKomponen = ? 
                    AND namaTugasBesar = ? AND kodeMataKuliah = ? 
                    AND kodeKelas = ? AND semester = ?";
@@ -38,7 +39,7 @@ if ($exists) {
     $stmt->bind_param("ssisssi", $komentar, $npm, $komponen, $namaTugasBesar, $kodeMatkul, $kelas, $semester);
 } else {
     // INSERT new comment
-    $sql_stmt = "INSERT INTO komentar 
+    $sql_stmt = "INSERT INTO nilai 
                  (npmPeserta, nomorKomponen, komentar, namaTugasBesar, kodeMataKuliah, kodeKelas, semester)
                  VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql_stmt);

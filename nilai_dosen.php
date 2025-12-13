@@ -44,7 +44,7 @@ $mahasiswa = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
 // --- 3. Fetch Component Visibility Status (Database Check) ---
-$sql_vis = "SELECT nomorKomponen, is_visible 
+$sql_vis = "SELECT nomorKomponen, isHidden 
             FROM komponenpenilaian 
             WHERE namaTugasBesar = ? AND kodeMataKuliah = ? 
               AND kodeKelas = ? AND semester = ?";
@@ -56,7 +56,7 @@ $result_vis = $stmt_vis->get_result();
 $visibility = [];
 while ($row = $result_vis->fetch_assoc()) {
     // is_visible will be 1 or 0 from the DB, cast to bool
-    $visibility[$row['nomorKomponen']] = (bool)$row['is_visible'];
+    $visibility[$row['nomorKomponen']] = (bool)$row['isHidden'];
 }
 $stmt_vis->close();
 
