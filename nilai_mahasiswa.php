@@ -14,7 +14,7 @@ $komponen = [
 <body>
 <div class="container">
 
-    <a href="home.php" class="back-btn">&#8592;</a>
+    <a href="/admin/admin.php" class="back-btn">&#8592;</a>
 
     <h2 class="header-course">Matkul90<br>AIF123123</h2>
 

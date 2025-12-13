@@ -10,7 +10,6 @@ $kodeMatkul     = $_GET["kodeMatkul"];
 $kelas          = $_GET["kelas"];
 $semester       = $_GET["semester"];
 $kelompok       = $_GET["kelompok"];
-
 /*
     Query mahasiswa + nilai per komponen FROM THIS GROUP ONLY
 */
@@ -96,7 +95,7 @@ if (empty($mahasiswa)) {
 <body>
 <div class="container">
 
-    <a href="home_dosen.php" class="back-btn">&#8592;</a>
+    <a class="back-btn">&#8592;</a>
 
     <h2 class="header-course">
         <?= $namaTugasBesar ?><br>
