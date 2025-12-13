@@ -44,7 +44,7 @@ $mahasiswa = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
 // --- 3. Fetch Component Visibility Status (Database Check) ---
-$sql_vis = "SELECT nomorKomponen, isHidden 
+$sql_vis = "SELECT nomorKomponen, is_visible 
             FROM komponenpenilaian 
             WHERE namaTugasBesar = ? AND kodeMataKuliah = ? 
               AND kodeKelas = ? AND semester = ?";
@@ -56,7 +56,7 @@ $result_vis = $stmt_vis->get_result();
 $visibility = [];
 while ($row = $result_vis->fetch_assoc()) {
     // is_visible will be 1 or 0 from the DB, cast to bool
-    $visibility[$row['nomorKomponen']] = (bool)$row['isHidden'];
+    $visibility[$row['nomorKomponen']] = (bool)$row['is_visible'];
 }
 $stmt_vis->close();
 
@@ -109,30 +109,54 @@ $isK2Visible = $visibility[2] ?? true;
     <?php endif; ?>
     
     <div class="hide-controls">
-        <h4>⚙️ Kontrol Visibilitas Nilai Mahasiswa (Diperlukan `toggle_visibility.php`)</h4>
+        <h4>⚙️ Kontrol Visibilitas Nilai Mahasiswa</h4>
         <p>Status saat ini: Komponen 1: 
         <strong><?= $isK1Visible ? 'TAMPIL' : 'TERSEMBUNYI' ?></strong>, Komponen 2: 
         <strong><?= $isK2Visible ? 'TAMPIL' : 'TERSEMBUNYI' ?></strong></p>
 
         <form action="toggle_visibility.php" method="POST" style="display:inline-block;">
-            <input type="hidden" name="namaTugasBesar" value="<?= $namaTugasBesar ?>">
-            <input type="hidden" name="kodeMatkul" value="<?= $kodeMatkul ?>">
-            <input type="hidden" name="kelas" value="<?= $kelas ?>">
-            <input type="hidden" name="semester" value="<?= $semester ?>">
-            <input type="hidden" name="kelompok" value="<?= $kelompok ?>">
-            <input type="hidden" name="komponen" value="1">
-            
-            <label>
-                <input 
-                    type="checkbox" 
-                    name="is_visible" 
-                    value="<?= $isK1Visible ? 0 : 1 ?>" 
-                    <?= $isK1Visible ? '' : 'checked' ?>
-                    onchange="this.form.submit()"
-                >
-                Sembunyikan K1 dari Mahasiswa
-            </label>
-        </form>
+    <input type="hidden" name="namaTugasBesar" value="<?= $namaTugasBesar ?>">
+    <input type="hidden" name="kodeMatkul" value="<?= $kodeMatkul ?>">
+    <input type="hidden" name="kelas" value="<?= $kelas ?>">
+    <input type="hidden" name="semester" value="<?= $semester ?>">
+    <input type="hidden" name="kelompok" value="<?= $kelompok ?>">
+    <input type="hidden" name="komponen" value="1">
+    
+    <input type="hidden" name="is_visible" value="0">
+    
+    <label>
+        <input 
+            type="checkbox" 
+            name="is_visible" 
+            value="1"               <?= $isK1Visible ? 'checked' : '' ?>
+            onchange="this.form.submit()"
+        >
+        Tampilkan K1 kepada Mahasiswa
+    </label>
+</form>
+
+&nbsp; | &nbsp;
+
+    <form action="toggle_visibility.php" method="POST" style="display:inline-block;">
+        <input type="hidden" name="namaTugasBesar" value="<?= $namaTugasBesar ?>">
+        <input type="hidden" name="kodeMatkul" value="<?= $kodeMatkul ?>">
+        <input type="hidden" name="kelas" value="<?= $kelas ?>">
+        <input type="hidden" name="semester" value="<?= $semester ?>">
+        <input type="hidden" name="kelompok" value="<?= $kelompok ?>">
+        <input type="hidden" name="komponen" value="2">
+        
+        <input type="hidden" name="is_visible" value="0">
+        
+        <label>
+            <input 
+                type="checkbox" 
+                name="is_visible" 
+                value="1"               <?= $isK2Visible ? 'checked' : '' ?>
+                onchange="this.form.submit()"
+            >
+            Tampilkan K2 kepada Mahasiswa
+        </label>
+    </form>
         
         &nbsp; | &nbsp;
 
@@ -142,18 +166,10 @@ $isK2Visible = $visibility[2] ?? true;
             <input type="hidden" name="kelas" value="<?= $kelas ?>">
             <input type="hidden" name="semester" value="<?= $semester ?>">
             <input type="hidden" name="kelompok" value="<?= $kelompok ?>">
-            <input type="hidden" name="komponen" value="2">
+            <input type="hidden" name="komponen" value="1">
             
-            <label>
-                <input 
-                    type="checkbox" 
-                    name="is_visible" 
-                    value="<?= $isK2Visible ? 0 : 1 ?>" 
-                    <?= $isK2Visible ? '' : 'checked' ?>
-                    onchange="this.form.submit()"
-                >
-                Sembunyikan K2 dari Mahasiswa
-            </label>
+            <input type="hidden" name="is_visible" value="<?= $isK1Visible ? 0 : 1 ?>">
+            
         </form>
         
         <hr style="margin-top: 15px;">

@@ -38,11 +38,11 @@ if(isset($_POST['send'])){
             if(!empty($kodeMK) && !empty($npmMhs) && !empty($nikDosen)){
                 
                 // 1. INPUT DOSEN (User & Profil)
-                mysqli_query($conn, "INSERT IGNORE INTO pengguna (username, pass, tipePengguna) VALUES ('$nikDosen', '', 2)");
+                mysqli_query($conn, "INSERT IGNORE INTO pengguna (username, pass, tipePengguna) VALUES ('$nikDosen', 'dosen', 2)");
                 mysqli_query($conn, "INSERT INTO dosen (nik, nama, username) VALUES ('$nikDosen', '$namaDosen', '$nikDosen') ON DUPLICATE KEY UPDATE nama='$namaDosen'");
 
                 // 2. INPUT MAHASISWA (User & Profil)
-                mysqli_query($conn, "INSERT IGNORE INTO pengguna (username, pass, tipePengguna) VALUES ('$npmMhs', '', 3)");
+                mysqli_query($conn, "INSERT IGNORE INTO pengguna (username, pass, tipePengguna) VALUES ('$npmMhs','mahasiswa', 3)");
                 mysqli_query($conn, "INSERT INTO mahasiswa (npm, nama, username) VALUES ('$npmMhs', '$namaMhs', '$npmMhs') ON DUPLICATE KEY UPDATE nama='$namaMhs'");
 
                 // 3. INPUT MATKUL & KELAS

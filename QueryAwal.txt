@@ -121,10 +121,10 @@ CREATE TABLE IF NOT EXISTS nilai(
 /*
 -- dummy data
 INSERT INTO pengguna VALUES
-('user_mhs1', 'pass123', 1),
-('user_mhs2', 'pass123', 1),
-('user_dsn1', 'pass123', 2),
-('user_dsn2', 'pass123', 2);
+('user_mhs1', 'mahasiswa', 1),
+('user_mhs2', 'mahasiswa', 1),
+('user_dsn1', 'dosen', 2),
+('user_dsn2', 'dosen', 2);
 
 INSERT INTO mahasiswa VALUES
 ('2200000001', 'Budi Santoso', 'user_mhs1'),
