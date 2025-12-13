@@ -145,7 +145,13 @@ if ($role == 2) {
                             
                             <a href="../dosen_edit_kelompok_controller.php?<?= $params ?>" class="btn-action btn-kelompok">Edit Kelompok</a>
                             <a href="../rubrik.php?<?= $params ?>" class="btn-action btn-rubrik">Edit Rubrik</a>
-                            <a href="../nilai_dosen.php?<?= $params ?>" class="btn-action btn-nilai">Edit Nilai</a>
+                            <a href="../pilih_kelompok.php?
+                                kodeMatkul=<?= urlencode($row['kodeMataKuliah']) ?>&
+                                namaMatkul=<?= urlencode($row['namaMataKuliah']) ?>&
+                                namaTB=<?= urlencode($row['namaTugasBesar']) ?>&
+                                kelas=<?= urlencode($row['kodeKelas']) ?>&
+                                semester=<?= urlencode($row['semester']) ?>"
+                            class="btn-action btn-nilai">Edit Nilai</a>
 
                         <?php elseif ($role == 3): ?>
 

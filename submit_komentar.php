@@ -1,96 +1,75 @@
 <?php
-$npm = $_POST['npm'];
-$komponen = $_POST['komponen'];
-$komentar = $_POST['komentar'];
+require "conn.php";
+session_start();
 
-// ===== Example DB save =====
-// mysqli_query($conn,
-//   "UPDATE nilai SET komentar='$komentar'
-//    WHERE npm='$npm' AND komponen='$komponen'");
+// --- 1. Get ALL data for database and redirect ---
+$npm            = $_POST['npm'] ?? '';
+$komponen       = (int)($_POST['komponen'] ?? 0);
+$komentar       = $_POST['komentar'] ?? '';
+
+// Ensure these key identifiers are present (they must be passed as hidden fields)
+$namaTugasBesar = $_POST["namaTugasBesar"] ?? '';
+$kodeMatkul     = $_POST["kodeMatkul"] ?? '';
+$kelas          = $_POST["kelas"] ?? '';
+$semester       = (int)($_POST["semester"] ?? 0);
+$kelompok       = (int)($_POST["kelompok"] ?? 0);
+
+// --- 2. Database Logic: UPDATE / INSERT into the 'komentar' table ---
+// Check if a comment already exists for this specific combination
+$sql_check = "SELECT 1 FROM nilai
+              WHERE npmPeserta = ? AND nomorKomponen = ? 
+                AND namaTugasBesar = ? AND kodeMataKuliah = ? 
+                AND kodeKelas = ? AND semester = ?";
+
+$check = $conn->prepare($sql_check);
+$check->bind_param("sisssi", $npm, $komponen, $namaTugasBesar, $kodeMatkul, $kelas, $semester);
+$check->execute();
+$exists = $check->get_result()->num_rows > 0;
+$check->close();
+
+if ($exists) {
+    // UPDATE existing comment
+    $sql_stmt = "UPDATE nilai 
+                 SET komentar = ?   
+                 WHERE npmPeserta = ? AND nomorKomponen = ? 
+                   AND namaTugasBesar = ? AND kodeMataKuliah = ? 
+                   AND kodeKelas = ? AND semester = ?";
+    $stmt = $conn->prepare($sql_stmt);
+    // Bind parameters: (string, string, integer, string, string, string, integer)
+    $stmt->bind_param("ssisssi", $komentar, $npm, $komponen, $namaTugasBesar, $kodeMatkul, $kelas, $semester);
+} else {
+    // INSERT new comment
+    $sql_stmt = "INSERT INTO nilai 
+                 (npmPeserta, nomorKomponen, komentar, namaTugasBesar, kodeMataKuliah, kodeKelas, semester)
+                 VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql_stmt);
+    // Bind parameters: (string, integer, string, string, string, string, integer)
+    $stmt->bind_param("sissssi", $npm, $komponen, $komentar, $namaTugasBesar, $kodeMatkul, $kelas, $semester);
+}
+
+// Execute the statement
+if ($stmt->execute()) {
+    $comment_saved_flag = 1;
+} else {
+    // Handle error if insertion/update failed
+    // Optionally log the error: error_log($stmt->error);
+    $comment_saved_flag = 0;
+}
+
+$stmt->close();
+$conn->close();
+
+// --- 3. Redirect back to nilai_dosen.php with ALL parameters ---
+$redirectURL = "nilai_dosen.php?" . http_build_query([
+    "kodeMataKuliah" => $kodeMatkul,
+    "namaTugasBesar" => $namaTugasBesar,
+    "kodeKelas"      => $kelas,
+    "semester"       => $semester,
+    "nomorKelompok"  => $kelompok,
+    "comment_saved"  => $comment_saved_flag // Pass success status
+]);
+
+// Perform the server-side redirect
+header("Location: " . $redirectURL);
+exit;
 ?>
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<title>Komentar Disimpan</title>
-
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #e3e3e3;
-        margin: 0;
-        padding: 40px;
-        color: #004d26;
-    }
-
-    .container {
-        max-width: 700px;
-        margin: auto;
-        background: white;
-        padding: 40px;
-        border-radius: 14px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.15);
-        text-align: center;
-    }
-
-    h1 {
-        margin-top: 0;
-        color: #184f17;
-        font-size: 32px;
-        font-weight: 700;
-    }
-
-    .success-box {
-        background: #e8f5e9;
-        border-left: 8px solid #1b5e20;
-        padding: 20px;
-        margin: 25px 0;
-        border-radius: 8px;
-        font-size: 18px;
-        line-height: 1.5;
-        color: #1b5e20;
-    }
-
-    .label {
-        font-weight: bold;
-        color: #004d26;
-    }
-
-    .back-btn {
-        display: inline-block;
-        margin-top: 25px;
-        padding: 12px 20px;
-        background-color: #4d8dff;
-        color: white;
-        font-size: 18px;
-        border: none;
-        border-radius: 10px;
-        text-decoration: none;
-        cursor: pointer;
-    }
-
-    .back-btn:hover {
-        background-color: #2f6ef5;
-    }
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-    <h1>Komentar Berhasil Disimpan</h1>
-
-    <div class="success-box">
-        <p><span class="label">NPM:</span> <?= htmlspecialchars($npm) ?></p>
-        <p><span class="label">Komponen:</span> <?= htmlspecialchars($komponen) ?></p>
-        <p><span class="label">Komentar:</span><br>
-        <?= nl2br(htmlspecialchars($komentar)) ?></p>
-    </div>
-
-    <a href="nilai_dosen.php" class="back-btn">Kembali ke Halaman Nilai</a>
-
-</div>
-
-</body>
-</html>
