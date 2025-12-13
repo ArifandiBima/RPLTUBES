@@ -1,4 +1,27 @@
-﻿KodeMK;NamaMK;Kelas;Semester;namaMhs;npmMhs;namaDosen;nikDosen
-AIF41256;Alpro;A;5;Bima;6182301076;Raymond;7458515
-AIF41256;Alpro;A;5;Matthew;6182301045;raymond;7458515
-AIF44475;ASD;Z;6;teser;6181901085;Dosen;7418545
+﻿KodeMK;NamaMK;Kelas;Semester;NamaMhs;NPM;NamaDosen;NIK
+IF101;Pemrograman Web;A;20241;Andi Saputra;6112001;Budi Santoso;D001
+IF101;Pemrograman Web;A;20241;Bela Pertiwi;6112002;Budi Santoso;D001
+IF101;Pemrograman Web;A;20241;Citra Kirana;6112003;Budi Santoso;D001
+IF101;Pemrograman Web;A;20241;Dimas Anggara;6112004;Budi Santoso;D001
+IF101;Pemrograman Web;B;20241;Eko Patrio;6112005;Budi Santoso;D001
+IF101;Pemrograman Web;B;20241;Fajar Nugraha;6112006;Budi Santoso;D001
+IF101;Pemrograman Web;B;20241;Gita Gutawa;6112007;Budi Santoso;D001
+IF200;Algoritma & Struktur Data;A;20241;Andi Saputra;6112001;Prof. Rina Dewi;D002
+IF200;Algoritma & Struktur Data;A;20241;Dimas Anggara;6112004;Prof. Rina Dewi;D002
+IF200;Algoritma & Struktur Data;A;20241;Hani Hanifah;6112008;Prof. Rina Dewi;D002
+IF200;Algoritma & Struktur Data;B;20241;Bela Pertiwi;6112002;Dr. Cahyo Utomo;D004
+IF200;Algoritma & Struktur Data;B;20241;Iwan Fals;6112009;Dr. Cahyo Utomo;D004
+IF200;Algoritma & Struktur Data;B;20241;Joko Anwar;6112010;Dr. Cahyo Utomo;D004
+SI200;Basis Data;A;20241;Citra Kirana;6112003;Siska Amalia;D003
+SI200;Basis Data;A;20241;Eko Patrio;6112005;Siska Amalia;D003
+SI200;Basis Data;A;20241;Fajar Nugraha;6112006;Siska Amalia;D003
+SI200;Basis Data;C;20241;Gita Gutawa;6112007;Siska Amalia;D003
+SI200;Basis Data;C;20241;Hani Hanifah;6112008;Siska Amalia;D003
+SI200;Basis Data;C;20241;Andi Saputra;6112001;Siska Amalia;D003
+IF305;Kecerdasan Buatan;A;20241;Iwan Fals;6112009;Prof. Rina Dewi;D002
+IF305;Kecerdasan Buatan;A;20241;Joko Anwar;6112010;Prof. Rina Dewi;D002
+IF305;Kecerdasan Buatan;A;20241;Dimas Anggara;6112004;Prof. Rina Dewi;D002
+KU100;Pancasila;A;20241;Eko Patrio;6112005;Drs. Wahyu Hidayat;D005
+KU100;Pancasila;A;20241;Fajar Nugraha;6112006;Drs. Wahyu Hidayat;D005
+KU100;Pancasila;B;20241;Gita Gutawa;6112007;Drs. Wahyu Hidayat;D005
+KU100;Pancasila;B;20241;Hani Hanifah;6112008;Drs. Wahyu Hidayat;D005
